@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +21,7 @@ class MainFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var coronaInfo: CoronaInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,7 @@ class MainFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        loadMain()
     }
 
     override fun onCreateView(
@@ -35,6 +38,56 @@ class MainFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false)
+    }
+
+    private fun loadMain() {
+        val th = Thread({
+            var api = CoronaAPI()
+            api.main(this)
+        }).start()
+    }
+
+    fun setCoronaInfo(coronaInfo: CoronaInfo) {
+        this.coronaInfo = coronaInfo
+
+        setupUI()
+    }
+
+    fun getCoronaInfo(): CoronaInfo? {
+        return this.coronaInfo
+    }
+
+    private fun setupUI() {
+        val view = requireView()
+
+        val world_confirm = view.findViewById<TextView>(R.id.world_confirm)
+        val world_confirm_variation = view.findViewById<TextView>(R.id.world_confirm_variation)
+        val world_death = view.findViewById<TextView>(R.id.world_death)
+        val world_death_variation = view.findViewById<TextView>(R.id.world_death_variation)
+
+        val korea_confirm = view.findViewById<TextView>(R.id.korea_confirm)
+        val korea_confirm_variation = view.findViewById<TextView>(R.id.korea_confirm_variation)
+        val korea_cur_confirm = view.findViewById<TextView>(R.id.korea_cur_confirm)
+        val korea_cur_confirm_variation = view.findViewById<TextView>(R.id.korea_cur_confirm_variation)
+        val korea_recovered = view.findViewById<TextView>(R.id.korea_recovered)
+        val korea_recovered_variation = view.findViewById<TextView>(R.id.korea_recovered_variation)
+        val korea_death = view.findViewById<TextView>(R.id.korea_death)
+        val korea_death_variation = view.findViewById<TextView>(R.id.korea_death_variation)
+
+        val daily_from_korea = view.findViewById<TextView>(R.id.daily_from_korea)
+        val daily_from_oversea = view.findViewById<TextView>(R.id.daily_from_oversea)
+
+        val update_time = view.findViewById<TextView>(R.id.update_time)
+
+        korea_confirm.text = coronaInfo?.getTotalConfirm()
+        korea_confirm_variation.text = coronaInfo?.getTodayConfirm()
+        korea_cur_confirm.text = coronaInfo?.getCurConfirm()
+        korea_cur_confirm_variation.text = coronaInfo?.getVariationCurConfirm()
+        korea_recovered.text = coronaInfo?.getTotalRecovered()
+        korea_recovered_variation.text = coronaInfo?.getTodayRecovered()
+        korea_death.text = coronaInfo?.getTotalDeath()
+        korea_death_variation.text = coronaInfo?.getTodayDeath()
+        update_time.text = coronaInfo?.getUpdateTime()
     }
 
     companion object {
