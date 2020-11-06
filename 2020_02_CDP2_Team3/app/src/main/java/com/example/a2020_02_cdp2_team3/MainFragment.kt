@@ -77,17 +77,28 @@ class MainFragment : Fragment() {
         val daily_from_korea = view.findViewById<TextView>(R.id.daily_from_korea)
         val daily_from_oversea = view.findViewById<TextView>(R.id.daily_from_oversea)
 
-        val update_time = view.findViewById<TextView>(R.id.update_time)
+        val update_time_world = view.findViewById<TextView>(R.id.update_time_world)
+        val update_time_korea = view.findViewById<TextView>(R.id.update_time_korea)
 
-        korea_confirm.text = coronaInfo?.getTotalConfirm()
-        korea_confirm_variation.text = coronaInfo?.getTodayConfirm()
-        korea_cur_confirm.text = coronaInfo?.getCurConfirm()
-        korea_cur_confirm_variation.text = coronaInfo?.getVariationCurConfirm()
-        korea_recovered.text = coronaInfo?.getTotalRecovered()
-        korea_recovered_variation.text = coronaInfo?.getTodayRecovered()
-        korea_death.text = coronaInfo?.getTotalDeath()
-        korea_death_variation.text = coronaInfo?.getTodayDeath()
-        update_time.text = coronaInfo?.getUpdateTime()
+        world_confirm.text = coronaInfo?.getWorldConfirm()
+        world_confirm_variation.text = coronaInfo?.getWorldConfirmVariation()
+        world_death.text = coronaInfo?.getWorldDeath()
+        world_death_variation.text = coronaInfo?.getWorldDeathVariation()
+
+        korea_confirm.text = coronaInfo?.getKoreaConfirm()
+        korea_confirm_variation.text = coronaInfo?.getKoreaConfirmVariation()
+        korea_cur_confirm.text = coronaInfo?.getKoreaCurConfirm()
+        korea_cur_confirm_variation.text = coronaInfo?.getKoreaCurConfirmVariation()
+        korea_recovered.text = coronaInfo?.getKoreaRecovered()
+        korea_recovered_variation.text = coronaInfo?.getKoreaRecoveredVariation()
+        korea_death.text = coronaInfo?.getKoreaDeath()
+        korea_death_variation.text = coronaInfo?.getKoreaDeathVariation()
+
+        daily_from_korea.text = "국내발생" + coronaInfo?.getDailyFromKorea()
+        daily_from_oversea.text = "해외유입" + coronaInfo?.getDailyFromOversea()
+
+        update_time_world.text = coronaInfo?.getUpdateTimeWorld()
+        update_time_korea.text = coronaInfo?.getUpdateTimeKorea()
     }
 
     companion object {

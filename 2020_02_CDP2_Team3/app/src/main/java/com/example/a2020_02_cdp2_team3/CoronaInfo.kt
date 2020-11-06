@@ -2,99 +2,175 @@ package com.example.a2020_02_cdp2_team3
 
 class CoronaInfo {
 
-    private var count_total_confirm: String? = null
-    private var count_cur_confirm: String? = null
-    private var count_total_recovered: String? = null
-    private var count_total_death: String? = null
-    private var count_today_confirm: String? = null
-    private var count_today_recovered: String? = null
-    private var count_today_death: String? = null
-    private var count_variation_cur_confirm: String? = null
-    private var update_time: String? = null
+    private var count_world_confirm: String = ""
+    private var count_world_confirm_variation: String = ""
+    private var count_world_death: String = ""
+    private var count_world_death_variation = ""
+
+    private var count_korea_confirm: String = ""
+    private var count_korea_cur_confirm: String = ""
+    private var count_korea_recovered: String = ""
+    private var count_korea_death: String = ""
+    private var count_korea_confirm_variation: String = ""
+    private var count_korea_recovered_variation: String = ""
+    private var count_korea_death_variation: String = ""
+    private var count_korea_cur_confirm_variation: String = ""
+
+    private var count_daily_from_korea: String = ""
+    private var count_daily_from_oversea: String = ""
+
+    private var update_time_world: String = ""
+    private var update_time_korea: String = ""
 
 
-    constructor(total_confirm: String, cur_confirm: String, total_recovered: String, total_death: String, today_confirm: String, today_recovered: String, today_death: String, variation_cur_confirm: String, update_time: String) {
-        this.count_total_confirm = total_confirm
-        this.count_cur_confirm = cur_confirm
-        this.count_total_recovered = total_recovered
-        this.count_total_death = total_death
-        this.count_today_confirm = today_confirm
-        this.count_today_recovered = today_recovered
-        this.count_today_death = today_death
-        this.count_variation_cur_confirm = variation_cur_confirm
-        this.update_time = update_time
+    constructor(world_confirm: String, world_confirm_variation: String, world_death: String, world_death_variation: String, korea_confirm: String, korea_cur_confirm: String, korea_recovered: String, korea_death: String, korea_confirm_variation: String, korea_recovered_variation: String, korea_death_variation: String, korea_cur_confirm_variation: String, daily_from_korea: String, daily_from_oversea: String, update_time_world: String, update_time_korea: String) {
+        this.count_world_confirm = world_confirm
+        this.count_world_confirm_variation = world_confirm_variation
+        this.count_world_death = world_death
+        this.count_world_death_variation = world_death_variation
+
+        this.count_korea_confirm = korea_confirm
+        this.count_korea_cur_confirm = korea_cur_confirm
+        this.count_korea_recovered = korea_recovered
+        this.count_korea_death = korea_death
+        this.count_korea_confirm_variation = korea_confirm_variation
+        this.count_korea_recovered_variation = korea_recovered_variation
+        this.count_korea_death_variation = korea_death_variation
+        this.count_korea_cur_confirm_variation = korea_cur_confirm_variation
+
+        this.count_daily_from_korea = daily_from_korea
+        this.count_daily_from_oversea = daily_from_oversea
+
+        this.update_time_world = update_time_world
+        this.update_time_korea = update_time_korea
     }
 
-    fun setTotalConfirm(total_confirm: String) {
-        this.count_total_confirm = total_confirm
+    fun setWorldConfirm(world_confirm: String) {
+        this.count_world_confirm = world_confirm
     }
 
-    fun setCurConfirm(cur_confirm: String) {
-        this.count_cur_confirm = cur_confirm
+    fun setWorldConfirmVariation(world_confirm_variation: String) {
+        this.count_world_confirm_variation = world_confirm_variation
     }
 
-    fun setTotalRecovered(total_recovered: String) {
-        this.count_total_recovered =total_recovered
+    fun setWorldDeath(world_death: String) {
+        this.count_world_death = world_death
     }
 
-    fun setTotalDeath(total_death: String) {
-        this.count_total_death = total_death
+    fun setWorldDeathVariation(world_death_variation: String) {
+        this.count_world_death_variation = world_death_variation
     }
 
-    fun setTodayConfirm(today_confirm: String) {
-        this.count_today_confirm = today_confirm
+    fun setKoreaConfirm(korea_confirm: String) {
+        this.count_korea_confirm = korea_confirm
     }
 
-    fun setTodayRecovered(today_recovered: String) {
-        this.count_today_recovered = today_recovered
+    fun setKoreaCurConfirm(korea_cur_confirm: String) {
+        this.count_korea_cur_confirm = korea_cur_confirm
     }
 
-    fun setTodayDeath(today_death: String) {
-        this.count_today_death = today_death
+    fun setKoreaRecovered(korea_recovered: String) {
+        this.count_korea_recovered =korea_recovered
     }
 
-    fun setUpdateTime(update_time: String) {
-        this.update_time = update_time
+    fun setKoreaDeath(korea_death: String) {
+        this.count_korea_death = korea_death
     }
 
-    fun setVariationCurConfirm(variation_cur_confirm: String) {
-        this.count_variation_cur_confirm = variation_cur_confirm
+    fun setKoreaConfirmVariation(korea_confirm_variation: String) {
+        this.count_korea_confirm_variation = korea_confirm_variation
     }
 
-    fun getTotalConfirm(): String? {
-        return count_total_confirm
+    fun setKoreaRecoveredVariation(korea_recovered_variation: String) {
+        this.count_korea_recovered_variation = korea_recovered_variation
     }
 
-    fun getCurConfirm(): String? {
-        return count_cur_confirm
+    fun setKoreaDeathVariation(korea_death_variation: String) {
+        this.count_korea_death_variation = korea_death_variation
     }
 
-    fun getTotalRecovered(): String? {
-        return count_total_recovered
+    fun setDailyFromKorea(daily_from_korea: String) {
+        this.count_daily_from_korea = daily_from_korea
     }
 
-    fun getTotalDeath(): String? {
-        return count_total_death
+    fun setDailyFromOversea(daily_from_oversea: String) {
+        this.count_daily_from_oversea = daily_from_oversea
     }
 
-    fun getTodayConfirm(): String? {
-        return count_today_confirm
+    fun setUpdateTimeKorea(update_time_korea: String) {
+        this.update_time_korea = update_time_korea
     }
 
-    fun getTodayRecovered(): String? {
-        return count_today_recovered
+    fun setUpdateTimeWorld(update_time_world: String) {
+        this.update_time_world = update_time_world
     }
 
-    fun getTodayDeath(): String? {
-        return count_today_death
+    fun setKoreaCurConfirmVariation(korea_cur_confirm_variation: String) {
+        this.count_korea_cur_confirm_variation = korea_cur_confirm_variation
     }
 
-    fun getUpdateTime(): String? {
-        return update_time
+    fun getWorldConfirm(): String {
+        return count_world_confirm
     }
 
-    fun getVariationCurConfirm(): String? {
-        return count_variation_cur_confirm
+    fun getWorldConfirmVariation(): String {
+        return count_world_confirm_variation
+    }
+
+    fun getWorldDeath(): String {
+        return count_world_death
+    }
+
+    fun getWorldDeathVariation(): String {
+        return count_world_death_variation
+    }
+
+    fun getKoreaConfirm(): String {
+        return count_korea_confirm
+    }
+
+    fun getKoreaCurConfirm(): String {
+        return count_korea_cur_confirm
+    }
+
+    fun getKoreaRecovered(): String {
+        return count_korea_recovered
+    }
+
+    fun getKoreaDeath(): String {
+        return count_korea_death
+    }
+
+    fun getKoreaConfirmVariation(): String {
+        return count_korea_confirm_variation
+    }
+
+    fun getKoreaRecoveredVariation(): String {
+        return count_korea_recovered_variation
+    }
+
+    fun getKoreaDeathVariation(): String {
+        return count_korea_death_variation
+    }
+
+    fun getDailyFromKorea(): String {
+        return count_daily_from_korea
+    }
+
+    fun getDailyFromOversea(): String {
+        return count_daily_from_oversea
+    }
+
+    fun getUpdateTimeKorea(): String {
+        return update_time_korea
+    }
+
+    fun getUpdateTimeWorld(): String {
+        return update_time_world
+    }
+
+    fun getKoreaCurConfirmVariation(): String {
+        return count_korea_cur_confirm_variation
     }
 
 }

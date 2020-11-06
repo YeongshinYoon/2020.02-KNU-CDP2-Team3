@@ -1,8 +1,7 @@
 package com.example.a2020_02_cdp2_team3
 
-import android.content.Context
 import android.util.Log
-import androidx.fragment.app.Fragment
+import org.jsoup.Jsoup
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -19,8 +18,7 @@ class CoronaAPI {
 
     fun main(fr: MainFragment) {
         val url = apiURL+apiKey
-        val temp = "-10".toInt()
-        Log.i("CoronaAPI-main", temp.toString())
+
         get(url, fr)
     }
 
@@ -37,6 +35,25 @@ class CoronaAPI {
     }
 
     private fun parseData(body: InputStream, fr: MainFragment) {
+        var doc = Jsoup.connect("https://search.naver.com/search.naver?where=nexearch&sm=top_sly.hst&fbm=0&acr=1&acq=코로나&qdt=0&ie=utf8&query=코로나").get()
+        var elements = doc.select("div.status_info ul li p")
+
+        var world_confirm = elements[4].text()
+        var world_death = elements[5].text()
+
+        elements = doc.select("div.status_info ul li em")
+
+        var world_confirm_variation = "+"+elements[4].text()
+        var world_death_variation = "+"+elements[5].text()
+
+        elements = doc.select("div.csp_infoCheck_area a")
+        var update_time_world = elements[5].text()
+        var update_time_korea = elements[1].text()
+
+        elements = doc.select("div.status_today ul li em")
+        var daily_from_korea = elements[0].text()
+        var daily_from_oversea = elements[1].text()
+
         val streamReader = InputStreamReader(body)
 
         var total_confirm = ""
@@ -47,7 +64,6 @@ class CoronaAPI {
         var today_recovered = ""
         var today_death = ""
         var variation_cur_confirm = ""
-        var update_time = ""
 
         try {
             BufferedReader(streamReader).use({ lineReader ->
@@ -65,7 +81,6 @@ class CoronaAPI {
                             "TodayRecovered" -> today_recovered = "+"+value
                             "TodayDeath" -> today_death = "+"+value
                             "TotalCaseBefore" -> variation_cur_confirm = value
-                            "updateTime" -> update_time = value
                         }
                     }
                     line = lineReader.readLine()
@@ -81,7 +96,7 @@ class CoronaAPI {
                     variation_cur_confirm = "+"+variation_cur_confirm
                 }
 
-                val coronaInfo = CoronaInfo(total_confirm, cur_confirm, total_recovered, total_death, today_confirm, today_recovered, today_death, variation_cur_confirm, update_time)
+                val coronaInfo = CoronaInfo(world_confirm, world_confirm_variation, world_death, world_death_variation, total_confirm, cur_confirm, total_recovered, total_death, today_confirm, today_recovered, today_death, variation_cur_confirm, daily_from_korea, daily_from_oversea, update_time_world, update_time_korea)
                 fr.setCoronaInfo(coronaInfo)
             })
         } catch (e: IOException) {
