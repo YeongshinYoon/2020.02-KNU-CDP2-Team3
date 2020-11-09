@@ -37,6 +37,9 @@ class GraphFragment : Fragment() {
         val view = requireView()
         val cumulativeCasesLineChart = view.findViewById<LineChart>(R.id.cumulativeCasesLineChart)
 
+        /*
+         Set graph styles.
+         */
         val xAxis = cumulativeCasesLineChart.xAxis
         xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
@@ -60,8 +63,20 @@ class GraphFragment : Fragment() {
             }
         }
 
-        // SAMPLE DATA
+        /*
+         Construct graph with sample data.
 
+         Entry := each data
+         entries := ArrayList of Entry
+
+         lineDataSet := LineDataSet(entries, "y범례")
+
+         dataSets := ArrayList of ILineDataSet.
+         dataSets.add(lineDataSet)
+
+         data := LineData(dataSets)
+         chart.data = data
+         */
         val entries = ArrayList<Entry>()
         entries.add(Entry(0f, 1f))
         entries.add(Entry(1f, 4f))
@@ -95,6 +110,7 @@ class GraphFragment : Fragment() {
 
         // SET CHARTS
         // Charts must be set after the view was created
+        // https://developer.android.com/reference/android/app/Fragment
         setCumulativeCasesLineChart()
     }
 
