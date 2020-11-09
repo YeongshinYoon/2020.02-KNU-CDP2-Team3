@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".GraphFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="그래프 Fragment" />
+<!-- https://ovenapp.io/project/cj9q8hEMjUIbeN8P2YIYmSZXFQBkXNOh#8pQ79 -->
 
-</FrameLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        tools:context=".GraphFragment">
+
+        <View
+            android:id="@+id/line1"
+            android:background="#bdbdbd"
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/line1"
+            android:id="@+id/title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="누적 확진/격리해제 현황" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/title1"
+            android:id="@+id/cumulativeCasesLineChart"
+            android:layout_width="match_parent"
+            android:layout_height="376dp" />
+
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/cumulativeCasesLineChart"
+            android:id="@+id/line2"
+            android:background="#bdbdbd"
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/line2"
+            android:id="@+id/title2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:text="일별 확진자 현황" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/title2"
+            android:id="@+id/dayCasesChart"
+            android:layout_width="match_parent"
+            android:layout_height="376dp" />
+
+    </RelativeLayout>
+</ScrollView>
