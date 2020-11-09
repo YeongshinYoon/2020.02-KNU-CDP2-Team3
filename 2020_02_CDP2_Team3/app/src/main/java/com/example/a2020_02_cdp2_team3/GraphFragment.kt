@@ -1,10 +1,21 @@
 package com.example.a2020_02_cdp2_team3
 
+import android.R.attr.entries
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.IDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +31,75 @@ class GraphFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+
+    private fun setCumulativeCasesLineChart() {
+        val view = requireView()
+        val cumulativeCasesLineChart = view.findViewById<LineChart>(R.id.cumulativeCasesLineChart)
+
+        val xAxis = cumulativeCasesLineChart.xAxis
+        xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            textSize = 10f
+            setDrawGridLines(true)
+            granularity = 1f
+            axisMinimum = 2f
+            isGranularityEnabled = true
+
+        }
+
+        cumulativeCasesLineChart.apply {
+            axisRight.isEnabled = false
+            axisLeft.axisMaximum = 50f
+            legend.apply {
+                textSize = 15f
+                verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                orientation = Legend.LegendOrientation.HORIZONTAL
+                setDrawInside(false)
+            }
+        }
+
+        // SAMPLE DATA
+
+        val entries = ArrayList<Entry>()
+        entries.add(Entry(0f, 1f))
+        entries.add(Entry(1f, 4f))
+        entries.add(Entry(2f, 7f))
+        entries.add(Entry(3f, 9f))
+        entries.add(Entry(4f, 15f))
+
+        val lineDataSet = LineDataSet(entries, "y범례")
+        lineDataSet.apply {
+            lineWidth = 2f
+            circleRadius = 6f
+            circleHoleColor = ContextCompat.getColor(context!!, R.color.purple_500)
+            color = ContextCompat.getColor(context!!, R.color.purple_700)
+        }
+        lineDataSet.setCircleColor(ContextCompat.getColor(context!!, R.color.purple_200))
+
+        val dataSets = ArrayList<ILineDataSet>()
+        dataSets.add(lineDataSet)
+
+        val data = LineData(dataSets)
+        cumulativeCasesLineChart.data = data
+        cumulativeCasesLineChart.invalidate()
+
+    }
+
+
+
+
+    override fun onStart() {
+        super.onStart()
+
+        // SET CHARTS
+        // Charts must be set after the view was created
+        setCumulativeCasesLineChart()
+    }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
