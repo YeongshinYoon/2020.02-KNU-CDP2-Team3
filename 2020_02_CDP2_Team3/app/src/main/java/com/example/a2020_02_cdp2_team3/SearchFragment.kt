@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private val inForm:String = " 입력예시: 시/도:서울 , 시/군/구:강남구\n 시/도:대구 , 시/군/구:북구\n 시/도:경기 , 시/군/구:가평군 |\n\t\t구리시 | 성남시 분당구\n 시/도:세종 , 시/군/구:세종특별자치시\n 시/도:경북 , 시/군/구:경산시"
 
 /**
  * A simple [Fragment] subclass.
@@ -69,7 +70,7 @@ class SearchFragment : Fragment() {
         val input2 = view.findViewById<EditText>(R.id.input2)
         val input3 = view.findViewById<EditText>(R.id.input3)
         var SearchAddr :String = ""
-
+        view.findViewById<TextView>(R.id.RView).setText(inForm)
         btn1.setOnClickListener {
             val in1 =input1.text.toString()
             val in2 =input2.text.toString()
@@ -153,17 +154,18 @@ class HospFind {
             if(n.getNodeType()==Node.ELEMENT_NODE){
                 val e=n as Element
                     if(  e.getElementsByTagName("sidoNm").item(0).textContent==in1){
-                        if(e.getElementsByTagName("sgguNm").item(0).textContent==in2){
+                        if(e.getElementsByTagName("sgguNm").item(0).textContent.contains(in2)){
                             sb.append( e.getElementsByTagName("yadmNm").item(0).textContent+"  "+
                                     e.getElementsByTagName("telno").item(0).textContent+"\n")
                         }
                     }
             }
         }
-        if(sb.toString()==""){
-            setresultPrint("입력예시: 시/도:서울 , 시/군/구:강남구 시/도:대구 , 시/군/구:북구", frame)
+        if(sb.toString()=="") {
+            setresultPrint(inForm, frame)
         }
-        else
-        setresultPrint(sb.toString(), frame)
+        else {
+            setresultPrint(sb.toString(), frame)
+        }
     }
 }
