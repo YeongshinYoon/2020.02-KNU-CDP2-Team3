@@ -6,7 +6,11 @@
     tools:context=".SearchFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#bdbdbd"></View>
 
     <EditText
         android:id="@+id/input1"
@@ -51,5 +55,19 @@
             android:layout_weight="1"
             android:text="코로나 안심식당 검색" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/RView"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:text="TextView"
+        android:textSize="18sp" />
 
 </LinearLayout>
