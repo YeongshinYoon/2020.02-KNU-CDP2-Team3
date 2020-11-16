@@ -1,43 +1,69 @@
 package com.example.a2020_02_cdp2_team3
 
-import android.app.Activity
 import android.os.Bundle
-
-import android.os.StrictMode
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.app.Activity
+import android.os.StrictMode
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 import java.net.URL
 
-class ageAct : Activity() {
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [age.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class age : Fragment() {
+    // TODO: Rename and change types of parameters
+    private var param1: String? = null
+    private var param2: String? = null
+    val status1 = view?.findViewById<Button>(R.id.result_age) as TextView
+    var initem = false
+    var inconfCase = false
+    var increateDt = false
+    var incriticalRate = false
+    var inconfCaseRate = false
+    var indeath = false
+    var indeathRate = false
+    var ingubun = false
+    var inseq = false
+    var inupdateDt = false
+    var number = 1
+    var confCase: String? = null
+    var confCaseRate: String? = null
+    var createDt: String? = null
+    var criticalRate: String? = null
+    var death: String? = null
+    var deathRate: String? = null
+    var seq: String? = null
+    var updateDt: String? = null
+    var gubun: String? = null
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_age)
-        StrictMode.enableDefaults()
-        val status1 = findViewById<View>(R.id.result) as TextView
-        var initem = false
-        var inconfCase = false
-        var increateDt = false
-        var incriticalRate = false
-        var inconfCaseRate = false
-        var indeath = false
-        var indeathRate = false
-        var ingubun = false
-        var inseq = false
-        var inupdateDt = false
-        var number = 1
-        var confCase: String? = null
-        var confCaseRate: String? = null
-        var createDt: String? = null
-        var criticalRate: String? = null
-        var death: String? = null
-        var deathRate: String? = null
-        var seq: String? = null
-        var updateDt: String? = null
-        var gubun: String? = null
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         try {
             val url = URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
             val paserCreator = XmlPullParserFactory.newInstance()
@@ -137,10 +163,36 @@ class ageAct : Activity() {
                 }
                 paserEvent = parser.next()
             }
-        } catch (e: XmlPullParserException) {
+        }
+        catch (e: XmlPullParserException) {
             status1.text = "에러"
         } catch (e: IOException) {
             status1.text = "에러"
         }
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_age, container, false)
     }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment age.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+                age().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putString(ARG_PARAM2, param2)
+                    }
+                }
+    }
+
 }
+
