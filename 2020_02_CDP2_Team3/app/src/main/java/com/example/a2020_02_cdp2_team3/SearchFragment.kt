@@ -1,5 +1,5 @@
 package com.example.a2020_02_cdp2_team3
-
+//1121
 import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -81,16 +81,25 @@ class SearchFragment : Fragment() {
         btn1.setOnClickListener {
             val in1 =input1.text.toString()
             val in2 =input2.text.toString()
-
-            hosp(in1, in2, this)
-            tt.setText("선별진료소" + in1 + " " + in2)
+            if(in1.trim()==""){
+                tt.setText("선별진료소 클릭... 시/도 입력하세요")//주소 출력을 하지 않기 위한 코드
+            }
+            else {
+                hosp(in1.trim(), in2.trim(), this)
+                tt.setText("선별진료소" + in1 + " " + in2)
+            }
         }
         btn2.setOnClickListener {
             val in1 =input1.text.toString()
             val in2 =input2.text.toString()
+            if(in1.trim()==""){
+                tt.setText("안심식당 클릭.... 시/도 입력하세요")//주소 출력을 하지 않기 위한 코드
+            }
+            else{
+                food(in1.trim(), in2.trim(), this)
+                tt.setText("안심식당 " + in1 + " " + in2 + " 검색중.......")
+            }
 
-            food(in1, in2, this)
-            tt.setText("안심식당 " + in1 + " " + in2 + " 검색 시간 1분 소요")
         }
     }
     @RequiresApi(Build.VERSION_CODES.N)//main
@@ -195,11 +204,9 @@ class HospFind {
                 if(  e.getElementsByTagName("sidoNm").item(0).textContent.contains(in1)){
                     if(e.getElementsByTagName("sgguNm").item(0).textContent.contains(in2)){
                         sb.append(
-                            e.getElementsByTagName("sidoNm").item(0).textContent + " " +
-                                    e.getElementsByTagName("sgguNm")
-                                        .item(0).textContent + "\n" + e.getElementsByTagName(
-                                "yadmNm"
-                            ).item(0).textContent + "  " +
+                            //e.getElementsByTagName("sidoNm").item(0).textContent + " " +
+                            //        e.getElementsByTagName("sgguNm").item(0).textContent + "\n" +
+                            e.getElementsByTagName("yadmNm" ).item(0).textContent + "  " +
                                     e.getElementsByTagName("telno").item(0).textContent + "\n"
                         )
                     }
@@ -221,6 +228,7 @@ class FoodFind {
     @Throws(IOException::class)
     fun main(in1: String, in2: String, frame: SearchFragment) {//args: Array<String>
         val sbF = StringBuilder()
+        var cnt = 0
         for(i in 0..17) {//17
             println("${i}" + "---------------------------------------------------------------------------")
             val urlBuilder =
@@ -235,12 +243,11 @@ class FoodFind {
                     val e = n as Element
                     if (e.getElementsByTagName("RELAX_SI_NM").item(0).textContent.contains(in1)) {
                         if (e.getElementsByTagName("RELAX_SIDO_NM").item(0).textContent.contains(in2)) {
+                            cnt++
                             sbF.append(
-                                e.getElementsByTagName("RELAX_ADD1").item(0).textContent + "-->" +
-                                        e.getElementsByTagName("RELAX_GUBUN_DETAIL")
-                                            .item(0).textContent + "\n" + e.getElementsByTagName(
-                                    "RELAX_RSTRNT_NM"
-                                ).item(0).textContent + "  " +
+                                // e.getElementsByTagName("RELAX_ADD1").item(0).textContent + "-->" +
+                                //         e.getElementsByTagName("RELAX_GUBUN_DETAIL").item(0).textContent + "\n" +
+                                e.getElementsByTagName("RELAX_RSTRNT_NM").item(0).textContent + "  " +
                                         e.getElementsByTagName("RELAX_RSTRNT_TEL")
                                             .item(0).textContent + "\n"
                             )
@@ -249,7 +256,10 @@ class FoodFind {
                     }
                 }
             }
-
+            if(cnt>4) {
+                println("${cnt}  ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ")
+                break
+            }//안심식당은 시간 단축
         }
         if(sbF.toString()=="") {
             setresultPrint(inFormF, frame)
