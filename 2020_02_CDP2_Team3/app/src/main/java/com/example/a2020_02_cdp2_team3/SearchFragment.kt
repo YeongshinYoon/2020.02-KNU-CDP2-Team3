@@ -24,8 +24,8 @@ import javax.xml.parsers.DocumentBuilderFactory
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-private val inFormH:String = " 선별진료소 입력예시: 시/도:서울 , 시/군/구:강남구\n 시/도:대구 , 시/군/구:북구\n 시/도:경기 , 시/군/구:가평군 |\n\t\t구리시 | 성남시 분당구\n 시/도:세종 , 시/군/구:세종\n 시/도:경북 , 시/군/구:경산시"
-private val inFormF:String = " 안심 식당  입력예시: 시/도:서울 , 시/군/구:광진구\n 시/도:*경상북도* , 시/군/구:경산시\n시/도:대구 , 시/군/구:북구\n 시/도:경기 , 시/군/구:가평군 |\n\t\t구리시 | *성남시*\n 시/도:세종 , 시/군/구:세종"
+private val inFormH:String = " 선별진료소 입력예시:\n 시/도:서울 , 시/군/구:강남구\n 시/도:대구 , 시/군/구:북구\n 시/도:경기 , 시/군/구:가평군 |\n\t\t구리시 | 성남시 분당구\n 시/도:세종 , 시/군/구:세종\n 시/도:경북 , 시/군/구:경산시"
+private val inFormF:String = " 안심 식당  입력예시:\n 시/도:*서울특별시*, 시/군/구:광진구\n 시/도:*경상북도* , 시/군/구:경산시\n시/도:대구광역시, 시/군/구:북구\n 시/도:*경기도*, 시/군/구:가평군 |\n\t\t구리시 | *성남시*\n 시/도:*세종특별자시치* , 시/군/구:세종"
 
 /**
  * A simple [Fragment] subclass.
@@ -75,7 +75,7 @@ class SearchFragment : Fragment() {
         val input2 = view.findViewById<EditText>(R.id.input2)
         val v = view.findViewById<TextView>(R.id.RView)
         var SearchAddr :String = ""
-        v.setText(inFormH + "\n---------------------\n" + inFormF)
+        v.setText(inFormH + "\n-ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n" + inFormF)
         v.setMovementMethod(ScrollingMovementMethod())
         v.scrollTo(0,0)
         btn1.setOnClickListener {
@@ -222,17 +222,17 @@ class HospFind {
     }
 }
 
-
+//http://211.237.50.150:7080/openapi/9cc189ba422035b5fe9b253663f1e90692580bb5b4915c5cc5af526cfda11443/xml/Grid_20200713000000000605_1/1/1000?RELAX_SI_NM=대구광역시
 class FoodFind {
     @RequiresApi(Build.VERSION_CODES.N)// setresultPrint
     @Throws(IOException::class)
     fun main(in1: String, in2: String, frame: SearchFragment) {//args: Array<String>
         val sbF = StringBuilder()
         var cnt = 0
-        for(i in 0..17) {//17
+        for(i in 0..2) {//17
             println("${i}" + "---------------------------------------------------------------------------")
             val urlBuilder =
-                StringBuilder("http://211.237.50.150:7080/openapi/9cc189ba422035b5fe9b253663f1e90692580bb5b4915c5cc5af526cfda11443/xml/Grid_20200713000000000605_1/${i * 1000 + 1}/${i * 1000 + 1000}")
+                StringBuilder("http://211.237.50.150:7080/openapi/9cc189ba422035b5fe9b253663f1e90692580bb5b4915c5cc5af526cfda11443/xml/Grid_20200713000000000605_1/${i * 1000 + 1}/${i * 1000 + 1000}?RELAX_SI_NM=${in1}")
             val hosp: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(urlBuilder.toString())
             hosp.documentElement.normalize()
@@ -241,7 +241,7 @@ class FoodFind {
                 var n: Node = FoodL.item(i)
                 if (n.getNodeType() == Node.ELEMENT_NODE) {
                     val e = n as Element
-                    if (e.getElementsByTagName("RELAX_SI_NM").item(0).textContent.contains(in1)) {
+                 //   if (e.getElementsByTagName("RELAX_SI_NM").item(0).textContent.contains(in1)) {
                         if (e.getElementsByTagName("RELAX_SIDO_NM").item(0).textContent.contains(in2)) {
                             cnt++
                             sbF.append(
@@ -253,13 +253,13 @@ class FoodFind {
                             )
 
                         }
-                    }
+                  //  }  //in1
                 }
             }
-            if(cnt>4) {
-                println("${cnt}  ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ")
-                break
-            }//안심식당은 시간 단축
+//            if(cnt>4) {
+//                println("${cnt}  ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ")
+//                break
+//            }//안심식당은 시간 단축
         }
         if(sbF.toString()=="") {
             setresultPrint(inFormF, frame)
