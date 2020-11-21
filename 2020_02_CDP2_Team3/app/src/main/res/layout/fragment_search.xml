@@ -61,7 +61,7 @@
         android:layout_height="300dp"
         android:scrollbars="vertical"
         android:text="TextView"
-        android:textSize="18sp" />
+        android:textSize="15sp" />
 
     <View
         android:id="@+id/line4"
