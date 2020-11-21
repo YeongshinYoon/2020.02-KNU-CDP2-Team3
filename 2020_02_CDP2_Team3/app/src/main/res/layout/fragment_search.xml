@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SearchFragment">
 
     <View
         android:id="@+id/line"
@@ -58,9 +58,15 @@
     <TextView
         android:id="@+id/RView"
         android:layout_width="match_parent"
-        android:layout_height="497dp"
+        android:layout_height="300dp"
         android:scrollbars="vertical"
         android:text="TextView"
         android:textSize="18sp" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#bdbdbd"></View>
 
 </LinearLayout>
