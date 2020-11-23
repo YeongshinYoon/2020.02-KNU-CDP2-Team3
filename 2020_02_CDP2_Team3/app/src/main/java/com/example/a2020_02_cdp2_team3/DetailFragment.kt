@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +30,36 @@ class DetailFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+    override fun onStart() {
+        super.onStart()
+        DetailStart()
+    }
+
+    private fun DetailStart()
+    {
+
+        val btn1 = view?.findViewById<Button>(R.id.sex)
+        val btn2 = view?.findViewById<Button>(R.id.age)
+        val btn3 = view?.findViewById<Button>(R.id.area)
+
+
+        btn1?.setOnClickListener()
+        {
+            //sex.kt 프래그먼트로 화면변환이 안됌 ****
+
+        }
+        btn2?.setOnClickListener()
+        {
+            //age.kt 프래그먼트로 화면변환이 안됌 ****
+
+        }
+        btn3?.setOnClickListener()
+        {
+            //area.kt 프래그먼트로 화면변환이 안됌 ****
+
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,3 +89,4 @@ class DetailFragment : Fragment() {
             }
     }
 }
+

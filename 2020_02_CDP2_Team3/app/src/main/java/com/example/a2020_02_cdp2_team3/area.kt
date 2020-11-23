@@ -1,3 +1,4 @@
+
 package com.example.a2020_02_cdp2_team3
 
 import android.os.Bundle
@@ -36,10 +37,13 @@ class area : Fragment() {
         }
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        
         val status1 = view?.findViewById<Button>(R.id.result) as TextView
         var initem = false
         var increateDt = false
