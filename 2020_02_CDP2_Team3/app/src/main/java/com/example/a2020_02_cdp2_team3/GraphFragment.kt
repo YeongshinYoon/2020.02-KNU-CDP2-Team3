@@ -1,6 +1,7 @@
 package com.example.a2020_02_cdp2_team3
 
 import android.R.attr.entries
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,9 +46,9 @@ class GraphFragment : Fragment() {
             position = XAxis.XAxisPosition.BOTTOM
             textSize = 10f
             setDrawGridLines(true)
-            granularity = 1f
-            axisMinimum = 2f
-            isGranularityEnabled = true
+            // granularity = 1f
+            // axisMinimum = 2f
+            // isGranularityEnabled = true
 
         }
 
@@ -90,8 +91,10 @@ class GraphFragment : Fragment() {
             circleRadius = 6f
             circleHoleColor = ContextCompat.getColor(context!!, R.color.purple_500)
             color = ContextCompat.getColor(context!!, R.color.purple_700)
+            setCircleColor(ContextCompat.getColor(context!!, R.color.purple_200))
+            setDrawFilled(true)
+            fillColor = Color.BLACK
         }
-        lineDataSet.setCircleColor(ContextCompat.getColor(context!!, R.color.purple_200))
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(lineDataSet)
@@ -103,26 +106,33 @@ class GraphFragment : Fragment() {
     }
 
 
+    private fun loadChartData() {
+        val th = Thread {
+            // var api = CoronaAPI()
+            // api.main(this)
+            Thread.sleep(3000)
 
 
-    override fun onStart() {
-        super.onStart()
+            
 
-        // SET CHARTS
-        // Charts must be set after the view was created
-        // https://developer.android.com/reference/android/app/Fragment
-        setCumulativeCasesLineChart()
+            // SET CHARTS
+            // Charts must be set after the view was created
+            // https://developer.android.com/reference/android/app/Fragment
+            setCumulativeCasesLineChart()
+        }.start()
     }
 
 
-
-
+    /*
+        ENTRY POINT
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        loadChartData()
     }
 
     override fun onCreateView(
