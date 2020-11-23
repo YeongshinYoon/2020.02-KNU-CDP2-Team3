@@ -22,19 +22,6 @@ class CoronaInfo {
     private var update_time_world: String = ""
     private var update_time_korea: String = ""
 
-    // temp start
-    private var count_japan_confirm: String = ""
-    private var count_japan_confirm_variation: String = ""
-    private var count_japan_cur_confirm: String = ""
-    private var count_japan_cur_confirm_variation: String = ""
-    private var count_japan_recovered: String = ""
-    private var count_japan_recovered_variation: String = ""
-    private var count_japan_death: String = ""
-    private var count_japan_death_variation: String = ""
-    private var update_time_japan: String = ""
-    // temp end
-
-
     constructor(world_confirm: String, world_confirm_variation: String, world_death: String, world_death_variation: String, korea_confirm: String, korea_cur_confirm: String, korea_recovered: String, korea_death: String, korea_confirm_variation: String, korea_recovered_variation: String, korea_death_variation: String, korea_cur_confirm_variation: String, daily_from_korea: String, daily_from_oversea: String, update_time_world: String, update_time_korea: String) {
         this.count_world_confirm = world_confirm
         this.count_world_confirm_variation = world_confirm_variation
@@ -56,81 +43,6 @@ class CoronaInfo {
         this.update_time_world = update_time_world
         this.update_time_korea = update_time_korea
     }
-
-    // temp start
-    fun setJapanConfirm(japan_confirm: String) {
-        this.count_japan_confirm = japan_confirm
-    }
-
-    fun setJapanConfirmVariation(japan_confirm_variation: String) {
-        this.count_japan_confirm_variation = japan_confirm_variation
-    }
-
-    fun setJapanCurConfirm(japan_cur_confirm: String) {
-        this.count_japan_cur_confirm = japan_cur_confirm
-    }
-
-    fun setJapanCurConfirmVariation(japan_cur_confirm_variation: String) {
-        this.count_japan_cur_confirm_variation = japan_cur_confirm_variation
-    }
-
-    fun setJapanRecovered(japan_recovered: String) {
-        this.count_japan_recovered = japan_recovered
-    }
-
-    fun setJapanRecoveredVariation(japan_recovered_variation: String) {
-        this.count_japan_recovered_variation = japan_recovered_variation
-    }
-
-    fun setJapanDeath(japan_death: String) {
-        this.count_japan_death = japan_death
-    }
-
-    fun setJapanDeathVariation(japan_death_variation: String) {
-        this.count_japan_death_variation = japan_death_variation
-    }
-
-    fun setUpdateTimeJapan(update_time_japan: String) {
-        this.update_time_japan = update_time_japan
-    }
-
-    fun getJapanConfirm(): String {
-        return count_japan_confirm
-    }
-
-    fun getJapanConfirmVariation(): String {
-        return count_japan_confirm_variation
-    }
-
-    fun getJapanCurConfirm(): String {
-        return count_japan_cur_confirm
-    }
-
-    fun getJapanCurConfirmVariation(): String {
-        return count_japan_cur_confirm_variation
-    }
-
-    fun getJapanRecovered(): String {
-        return count_japan_recovered
-    }
-
-    fun getJapanRecoveredVariation(): String {
-        return count_japan_recovered_variation
-    }
-
-    fun getJapanDeath(): String {
-        return count_japan_death
-    }
-
-    fun getJapanDeathVariation(): String {
-        return count_japan_death_variation
-    }
-
-    fun getUpdateTimeJapan(): String {
-        return update_time_japan
-    }
-
-    // temp end
 
     fun setWorldConfirm(world_confirm: String) {
         this.count_world_confirm = world_confirm
