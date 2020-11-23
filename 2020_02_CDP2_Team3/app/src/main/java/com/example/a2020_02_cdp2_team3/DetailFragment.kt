@@ -44,7 +44,7 @@ class DetailFragment : Fragment() {
         val btn3 = view?.findViewById<Button>(R.id.area)
         val manager = getChildFragmentManager()
         val transaction = manager.beginTransaction()
-
+       
 
 
 
@@ -68,7 +68,7 @@ class DetailFragment : Fragment() {
         {
 
             childFragmentManager.beginTransaction().replace(R.id.child_fragment,area()).commit();
-            
+
         }
     }
 

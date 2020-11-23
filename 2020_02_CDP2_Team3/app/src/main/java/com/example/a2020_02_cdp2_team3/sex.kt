@@ -66,15 +66,13 @@ class sex : Fragment() {
         var updateDt: String? = null
         var gubun: String? = null
         try {
-            val url =
-                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+            val url = URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
             val paserCreator = XmlPullParserFactory.newInstance()
             val parser = paserCreator.newPullParser()
             parser.setInput(url.openStream(), null)
             var paserEvent = parser.eventType
-
             println("Loading..")
-            while (number != 103) {
+            while (number != 213) {
                 when (paserEvent) {
                     XmlPullParser.START_TAG -> {
                         if (parser.name == "confCase") {
@@ -148,7 +146,8 @@ class sex : Fragment() {
                     }
                     XmlPullParser.END_TAG -> {
                         if (parser.name == "item") {
-                            status1.text = """${status1.text}확진자 : $confCase
+                            if ((number == 103) or (number == 113)) {
+                                status1.text = """${status1.text}확진자 : $confCase
  확진률: $confCaseRate
  신규확진자 : $createDt
  치명률 : $criticalRate
@@ -156,10 +155,11 @@ class sex : Fragment() {
  사망률 : $deathRate
  번호 : $seq
  수정일 : $updateDt
-연령별 : $gubun
---------------------
+성별별 : $gubun
+-------------------------
 """
-                            initem = false
+                                initem = false
+                            }
                         }
                         number++ //하나의 status1
                     }
@@ -171,7 +171,6 @@ class sex : Fragment() {
         } catch (e: IOException) {
             status1.text = "에러"
         }
-
 
     }
     override fun onCreateView(
