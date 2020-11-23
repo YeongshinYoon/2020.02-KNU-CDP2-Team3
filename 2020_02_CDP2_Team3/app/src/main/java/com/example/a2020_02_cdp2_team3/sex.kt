@@ -37,11 +37,14 @@ class sex : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val status1 = view?.findViewById(R.id.result) as TextView
+    override fun onStart() {
+        super.onStart()
+        sexStart()
+    }
+
+    private fun sexStart()
+    {
+        val status1 = view?.findViewById(R.id.result_sex) as TextView
         var initem = false
         var inconfCase = false
         var increateDt = false
@@ -64,7 +67,7 @@ class sex : Fragment() {
         var gubun: String? = null
         try {
             val url =
-                URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
             val paserCreator = XmlPullParserFactory.newInstance()
             val parser = paserCreator.newPullParser()
             parser.setInput(url.openStream(), null)
@@ -167,6 +170,13 @@ class sex : Fragment() {
         } catch (e: IOException) {
             status1.text = "에러"
         }
+
+
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
 
 

@@ -29,28 +29,6 @@ class age : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    val status1 = view?.findViewById<Button>(R.id.result_age) as TextView
-    var initem = false
-    var inconfCase = false
-    var increateDt = false
-    var incriticalRate = false
-    var inconfCaseRate = false
-    var indeath = false
-    var indeathRate = false
-    var ingubun = false
-    var inseq = false
-    var inupdateDt = false
-    var number = 1
-    var confCase: String? = null
-    var confCaseRate: String? = null
-    var createDt: String? = null
-    var criticalRate: String? = null
-    var death: String? = null
-    var deathRate: String? = null
-    var seq: String? = null
-    var updateDt: String? = null
-    var gubun: String? = null
-
 
 
 
@@ -61,9 +39,36 @@ class age : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+    override fun onStart() {
+        super.onStart()
+        ageStart()
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    private fun ageStart()
+    {
+        val status1 = view?.findViewById(R.id.result_age) as TextView
+        var initem = false
+        var inconfCase = false
+        var increateDt = false
+        var incriticalRate = false
+        var inconfCaseRate = false
+        var indeath = false
+        var indeathRate = false
+        var ingubun = false
+        var inseq = false
+        var inupdateDt = false
+        var number = 1
+        var confCase: String? = null
+        var confCaseRate: String? = null
+        var createDt: String? = null
+        var criticalRate: String? = null
+        var death: String? = null
+        var deathRate: String? = null
+        var seq: String? = null
+        var updateDt: String? = null
+        var gubun: String? = null
+
+
         try {
             val url = URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
             val paserCreator = XmlPullParserFactory.newInstance()
@@ -169,6 +174,10 @@ class age : Fragment() {
         } catch (e: IOException) {
             status1.text = "에러"
         }
+    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_age, container, false)

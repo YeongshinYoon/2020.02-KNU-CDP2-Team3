@@ -25,17 +25,16 @@
             android:layout_height="wrap_content"
             android:text="지역별" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/result3"
-                android:layout_width="match_parent"
-                android:scrollbars="vertical"
-                android:text="TextView"
-                android:layout_height="wrap_content" />
-        </ScrollView>
+            <LinearLayout
+    android:id="@+id/child_fragment"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+</LinearLayout>
+
+
 
 
 

@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.2020_02_CDP2_Team3">
-        <activity android:name=".areaAct"></activity>
-        <activity android:name=".ageAct" />
+        <activity android:name=".ageAct"></activity>
+        <activity android:name=".areaAct" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
