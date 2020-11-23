@@ -35,6 +35,7 @@ class CoronaAPI {
     }
 
     private fun parseData(body: InputStream, fr: MainFragment) {
+        // Web Crawling Start
         var doc = Jsoup.connect("https://search.naver.com/search.naver?where=nexearch&sm=top_sly.hst&fbm=0&acr=1&acq=코로나&qdt=0&ie=utf8&query=코로나").get()
         var elements = doc.select("div.status_info ul li p")
 
@@ -53,7 +54,9 @@ class CoronaAPI {
         elements = doc.select("div.status_today ul li em")
         var daily_from_korea = elements[0].text()
         var daily_from_oversea = elements[1].text()
+        // Web Crawling End
 
+        // API Request Start
         val streamReader = InputStreamReader(body)
 
         var total_confirm = ""
@@ -89,10 +92,7 @@ class CoronaAPI {
                 var temp = variation_cur_confirm.toInt() + today_recovered.toInt() + today_death.toInt()
                 today_confirm = "+"+temp.toString()
 
-                if (variation_cur_confirm.toInt() < 0) {
-                    variation_cur_confirm = "-"+variation_cur_confirm
-                }
-                else {
+                if (variation_cur_confirm.toInt() >= 0) {
                     variation_cur_confirm = "+"+variation_cur_confirm
                 }
 
@@ -102,5 +102,6 @@ class CoronaAPI {
         } catch (e: IOException) {
             throw RuntimeException("API 응답을 읽는데 실패했습니다.", e)
         }
+        // API Request End
     }
 }
