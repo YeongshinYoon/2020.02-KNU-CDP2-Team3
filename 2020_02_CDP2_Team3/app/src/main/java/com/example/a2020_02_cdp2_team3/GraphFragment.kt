@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.LineChart
@@ -16,6 +17,13 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import kotlinx.coroutines.Dispatchers
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -105,21 +113,46 @@ class GraphFragment : Fragment() {
 
     }
 
+    private fun getAPI(): String {
+        val inputStream: InputStream
+        val result: String
+
+        val url: URL = URL("http://example.com/")
+        val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+
+        conn.connect()
+        inputStream = conn.inputStream
+
+        if (inputStream != null) {
+            result = inputStream.toString()
+        } else {
+            result = "Error"
+        }
+
+        return result
+    }
+
+    private fun toast(str: String) {
+        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun loadChartData() {
         val th = Thread {
             // var api = CoronaAPI()
             // api.main(this)
             Thread.sleep(3000)
+            // toast("Hello!")
+            // TODO: Can't toast on a thread that has not called Looper.prepare()
 
-
-            
 
             // SET CHARTS
             // Charts must be set after the view was created
             // https://developer.android.com/reference/android/app/Fragment
             setCumulativeCasesLineChart()
         }.start()
+
+
     }
 
 
