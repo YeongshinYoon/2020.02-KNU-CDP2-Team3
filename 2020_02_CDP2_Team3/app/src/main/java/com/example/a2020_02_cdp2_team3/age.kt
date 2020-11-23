@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.app.Activity
+import android.os.Build
 import android.os.StrictMode
+import androidx.annotation.RequiresApi
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -39,6 +41,7 @@ class age : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+
     override fun onStart() {
         super.onStart()
         ageStart()
@@ -67,13 +70,11 @@ class age : Fragment() {
         var seq: String? = null
         var updateDt: String? = null
         var gubun: String? = null
-
-
         try {
             val url = URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
             val paserCreator = XmlPullParserFactory.newInstance()
             val parser = paserCreator.newPullParser()
-            parser.setInput(url.openStream(), null)
+            parser.setInput(url.openStream(),null)
             var paserEvent = parser.eventType
             println("Loading..")
             while (number != 103) {
@@ -174,6 +175,10 @@ class age : Fragment() {
         } catch (e: IOException) {
             status1.text = "에러"
         }
+
+
+
+
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

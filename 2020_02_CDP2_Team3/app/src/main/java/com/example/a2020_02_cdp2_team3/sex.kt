@@ -72,6 +72,7 @@ class sex : Fragment() {
             val parser = paserCreator.newPullParser()
             parser.setInput(url.openStream(), null)
             var paserEvent = parser.eventType
+
             println("Loading..")
             while (number != 103) {
                 when (paserEvent) {
