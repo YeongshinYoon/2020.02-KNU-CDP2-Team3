@@ -22,7 +22,6 @@ class CoronaInfo {
     private var update_time_world: String = ""
     private var update_time_korea: String = ""
 
-
     constructor(world_confirm: String, world_confirm_variation: String, world_death: String, world_death_variation: String, korea_confirm: String, korea_cur_confirm: String, korea_recovered: String, korea_death: String, korea_confirm_variation: String, korea_recovered_variation: String, korea_death_variation: String, korea_cur_confirm_variation: String, daily_from_korea: String, daily_from_oversea: String, update_time_world: String, update_time_korea: String) {
         this.count_world_confirm = world_confirm
         this.count_world_confirm_variation = world_confirm_variation

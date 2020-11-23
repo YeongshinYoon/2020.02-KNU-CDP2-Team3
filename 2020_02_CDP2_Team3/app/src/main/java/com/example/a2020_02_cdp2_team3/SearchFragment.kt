@@ -165,11 +165,11 @@ class HospFind {
             "?" + URLEncoder.encode(
                 "ServiceKey",
                 "UTF-8"
-            ) + "=KUJ81dB6%2BRS16ZR38dzTr4WUe5faS3nR%2Bfcbd95v8LErhmkK1kjGf40eO4%2F7uyUORiZWrhMXRZgov%2Fgu5JcW%2BA%3D%3D"
+            ) + "=psFE%2BPwSbc%2FFEXAPNwaTqTN4Mpzaw2Mi1%2BvvPZsbHb4DL8dEVba%2BAekHQwi9c%2FpTjHhlvBWfJ%2FM4e%2BnQsAe09w%3D%3D"
         ) /*Service Key*/
         urlBuilder.append(
             "&" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + URLEncoder.encode(
-                "KUJ81dB6%2BRS16ZR38dzTr4WUe5faS3nR%2Bfcbd95v8LErhmkK1kjGf40eO4%2F7uyUORiZWrhMXRZgov%2Fgu5JcW%2BA%3D%3D",
+                "psFE%2BPwSbc%2FFEXAPNwaTqTN4Mpzaw2Mi1%2BvvPZsbHb4DL8dEVba%2BAekHQwi9c%2FpTjHhlvBWfJ%2FM4e%2BnQsAe09w%3D%3D",
                 "UTF-8"
             )
         ) /*공공데이터포털에서 받은 인증키*/
