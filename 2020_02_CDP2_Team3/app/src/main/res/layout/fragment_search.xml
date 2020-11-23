@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SearchFragment">
 
     <View
         android:id="@+id/line"
@@ -28,17 +28,9 @@
         android:hint="시/군/구"
         android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/input3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="읍/면/동"
-        android:inputType="textPersonName" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="59dp"
         android:orientation="horizontal">
 
         <Button
@@ -61,13 +53,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/RView"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="300dp"
+        android:scrollbars="vertical"
         android:text="TextView"
-        android:textSize="18sp" />
+        android:textSize="15sp" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#bdbdbd"></View>
 
 </LinearLayout>

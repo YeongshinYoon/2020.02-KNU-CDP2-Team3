@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailFragment">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <Button
+        android:id="@+id/sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="성별별" />
+
+    <Button
+        android:id="@+id/age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="연령별" />
+
+    <Button
+        android:id="@+id/area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="지역별" />
+
+
+
+    <LinearLayout
+        android:id="@+id/child_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="상세현황 Fragment" />
+        android:background="#2AFFEB3B"
+        android:orientation="vertical">
 
-</FrameLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
+
