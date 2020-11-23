@@ -46,34 +46,29 @@ class DetailFragment : Fragment() {
         val transaction = manager.beginTransaction()
 
 
+
+
+
+
+
         btn1?.setOnClickListener()
         {
-            //sex.kt 프래그먼트로 화면변환이 안됌 ****
-            transaction.replace(R.id.child_fragment, sex())
-
-            transaction.commit()
-
-
+           childFragmentManager.beginTransaction().replace(R.id.child_fragment,sex()).commit();
 
 
         }
         btn2?.setOnClickListener()
         {
-            transaction.replace(R.id.child_fragment, age())
 
-            transaction.commit()
-            //age.kt 프래그먼트로 화면변환이 안됌 ****
 
+            childFragmentManager.beginTransaction().replace(R.id.child_fragment,age()).commit();
 
         }
         btn3?.setOnClickListener()
         {
-            transaction.replace(R.id.child_fragment, area())
 
-            transaction.commit()
-
-            //area.kt 프래그먼트로 화면변환이 안됌 ****
-
+            childFragmentManager.beginTransaction().replace(R.id.child_fragment,area()).commit();
+            
         }
     }
 
