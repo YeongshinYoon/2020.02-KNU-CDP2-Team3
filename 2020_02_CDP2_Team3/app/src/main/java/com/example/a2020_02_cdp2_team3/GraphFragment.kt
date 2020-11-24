@@ -1,8 +1,11 @@
 package com.example.a2020_02_cdp2_team3
 
 import android.R.attr.entries
+import android.content.ContentValues.TAG
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.util.Xml
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +20,14 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserException
+import java.io.IOException
 import java.io.InputStream
+import java.lang.Thread.sleep
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -113,6 +117,8 @@ class GraphFragment : Fragment() {
 
     }
 
+
+
     private fun getAPI(): String {
         val inputStream: InputStream
         val result: String
@@ -132,25 +138,27 @@ class GraphFragment : Fragment() {
         return result
     }
 
-    private fun toast(str: String) {
-        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+    private val coroutineHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.d(TAG, "COROUTINE HANDLER! : $throwable")
     }
 
-
     private fun loadChartData() {
-        val th = Thread {
-            // var api = CoronaAPI()
-            // api.main(this)
-            Thread.sleep(3000)
-            // toast("Hello!")
-            // TODO: Can't toast on a thread that has not called Looper.prepare()
+
+        GlobalScope.launch(Dispatchers.Main + coroutineHandler) {
+            val data: String = async(Dispatchers.IO) {
+                Log.d(TAG, "await!")
 
 
-            // SET CHARTS
-            // Charts must be set after the view was created
-            // https://developer.android.com/reference/android/app/Fragment
-            setCumulativeCasesLineChart()
-        }.start()
+
+
+
+
+                "Hello!"
+            }.await()
+
+            Log.d(TAG, "Async has return value: $data")
+        }
+
 
 
     }
