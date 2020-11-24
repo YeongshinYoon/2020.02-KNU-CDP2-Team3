@@ -117,8 +117,6 @@ class GraphFragment : Fragment() {
 
     }
 
-
-
     private fun getAPI(): String {
         val inputStream: InputStream
         val result: String
