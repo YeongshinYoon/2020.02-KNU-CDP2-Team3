@@ -38,40 +38,22 @@ class DetailFragment : Fragment() {
 
     private fun DetailStart()
     {
-
         val btn1 = view?.findViewById<Button>(R.id.sex)
         val btn2 = view?.findViewById<Button>(R.id.age)
         val btn3 = view?.findViewById<Button>(R.id.area)
         val manager = getChildFragmentManager()
         val transaction = manager.beginTransaction()
-       
 
-
-
-
-
-
-        btn1?.setOnClickListener()
-        {
+        btn1?.setOnClickListener() {
            childFragmentManager.beginTransaction().replace(R.id.child_fragment,sex()).commit();
-
-
         }
-        btn2?.setOnClickListener()
-        {
-
-
+        btn2?.setOnClickListener() {
             childFragmentManager.beginTransaction().replace(R.id.child_fragment,age()).commit();
-
         }
-        btn3?.setOnClickListener()
-        {
-
+        btn3?.setOnClickListener() {
             childFragmentManager.beginTransaction().replace(R.id.child_fragment,area()).commit();
-
         }
     }
-
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
