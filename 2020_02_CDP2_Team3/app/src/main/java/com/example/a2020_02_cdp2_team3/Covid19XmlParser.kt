@@ -44,15 +44,20 @@ class Covid19XmlParser {
         while (parser.eventType != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) continue
 
+            Log.d(TAG, parser.name)
+
             // Starts by looking for the item tag
             if (parser.name == "item") {
                 entries.add(readItem(parser))
+                parser.nextTag()
             } else {
-                skip(parser)
+                // skip(parser)
+                parser.nextTag()
             }
         }
 
         return entries
+
     }
 
     @Throws(XmlPullParserException::class, IOException::class)

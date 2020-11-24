@@ -1,31 +1,28 @@
 package com.example.a2020_02_cdp2_team3
 
-import android.R.attr.entries
 import android.content.ContentValues.TAG
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.util.Xml
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.IDataSet
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.coroutines.*
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.io.InputStream
-import java.lang.Thread.sleep
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -68,25 +65,36 @@ class GraphFragment : Fragment() {
         const val KEY: String = "HpdkPZVpsnRoZJhs4Rv7eekrs%2BxXmZy1BqZwWXKZo8XmhF5ToGmyxvkI6XoTb9qahbKWosuRawWPuMMI0W3g9g%3D%3D"
     }
 
-
-
-
-    private fun setCumulativeCasesLineChart() {
+    private fun setCumulativeCasesLineChart(covid19Items: List<Covid19Item>) {
         val view = requireView()
         val cumulativeCasesLineChart = view.findViewById<LineChart>(R.id.cumulativeCasesLineChart)
+        val dataSize = covid19Items.size
 
         /*
-         Set graph styles.
+         Configure xAxis.
          */
         val xAxis = cumulativeCasesLineChart.xAxis
+
+        /*
+         Get X labels (stateDt from covid19Items)
+         */
+        val xAxisLabels: ArrayList<String> = ArrayList()
+        for (it in covid19Items) {
+            xAxisLabels.add(it.stateDt ?: "null")
+        }
+
+        /*
+         Set graph styles + axis values.
+         */
         xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
-            textSize = 10f
+            textSize = 8f
             setDrawGridLines(true)
-            // granularity = 1f
+            isGranularityEnabled = true
+            granularity = 1f
             // axisMinimum = 2f
-            // isGranularityEnabled = true
 
+            valueFormatter = IndexAxisValueFormatter(xAxisLabels)
         }
 
         cumulativeCasesLineChart.apply {
@@ -102,7 +110,7 @@ class GraphFragment : Fragment() {
         }
 
         /*
-         Construct graph with sample data.
+         Construct graph with covid19Items: List<Covid19Item>.
 
          Entry := each data
          entries := ArrayList of Entry
@@ -116,11 +124,9 @@ class GraphFragment : Fragment() {
          chart.data = data
          */
         val entries = ArrayList<Entry>()
-        entries.add(Entry(0f, 1f))
-        entries.add(Entry(1f, 4f))
-        entries.add(Entry(2f, 7f))
-        entries.add(Entry(3f, 9f))
-        entries.add(Entry(4f, 15f))
+        for (i in 0 until dataSize) {
+            entries.add(Entry(i.toFloat(), covid19Items.get(i).decideCnt!!.toFloat()))
+        }
 
         val lineDataSet = LineDataSet(entries, "y범례")
         lineDataSet.apply {
@@ -161,7 +167,6 @@ class GraphFragment : Fragment() {
     }
 
     private fun loadChartData() {
-
         // TODO: Use companion object with parameters.
         val urlStringBuilder: StringBuilder = StringBuilder(GraphFragment.ENDPOINT + "?")
         urlStringBuilder.append("ServiceKey=${GraphFragment.KEY}")
@@ -172,9 +177,11 @@ class GraphFragment : Fragment() {
 
         val urlString: String = urlStringBuilder.toString()
 
+        // Coroutine part.
         GlobalScope.launch(Dispatchers.Main + coroutineHandler) {
             val data: List<Covid19Item> = async(Dispatchers.IO) {
-                Log.d(TAG, "await!")
+                Log.d(TAG, "Await for parsing!")
+
                 downloadUrl(urlString)?.use { stream ->
                     Covid19XmlParser().parse(stream)
                 } ?: emptyList()
@@ -183,17 +190,16 @@ class GraphFragment : Fragment() {
             Log.d(TAG, "Parse complete!")
 
             if (data.isEmpty()) {
-                Log.d(TAG, "empty!")
+                Log.d(TAG, "List is empty!")
             } else {
                 for (it in data) {
-                    Log.d(TAG, it.stateDt ?: "null")
+                    Log.d(TAG, "${it.clearCnt}, ${it.decideCnt}, ${it.stateDt}")
                 }
             }
 
+            // Set charts here.
+            setCumulativeCasesLineChart(data)
         }
-
-
-
     }
 
 
@@ -210,10 +216,11 @@ class GraphFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_graph, container, false)
     }
+
 }
