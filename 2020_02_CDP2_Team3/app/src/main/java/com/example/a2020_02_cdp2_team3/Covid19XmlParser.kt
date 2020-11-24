@@ -1,5 +1,7 @@
 package com.example.a2020_02_cdp2_team3
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.util.Xml
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -10,12 +12,24 @@ private val ns: String? = null
 
 class Covid19XmlParser {
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream): List<*> {
+    fun parse(inputStream: InputStream): List<Covid19Item> {
         inputStream.use { inputStream ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
             parser.setInput(inputStream, null)
-            parser.nextTag()
+
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+            parser.next()
+
             return readItems(parser)
 
         }

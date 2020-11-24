@@ -45,6 +45,31 @@ class GraphFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment GraphFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+                GraphFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putString(ARG_PARAM2, param2)
+                    }
+                }
+
+        const val ENDPOINT: String = "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson"
+        const val KEY: String = "HpdkPZVpsnRoZJhs4Rv7eekrs%2BxXmZy1BqZwWXKZo8XmhF5ToGmyxvkI6XoTb9qahbKWosuRawWPuMMI0W3g9g%3D%3D"
+    }
+
+
+
 
     private fun setCumulativeCasesLineChart() {
         val view = requireView()
@@ -117,23 +142,18 @@ class GraphFragment : Fragment() {
 
     }
 
-    private fun getAPI(): String {
-        val inputStream: InputStream
-        val result: String
-
-        val url: URL = URL("http://example.com/")
-        val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-
-        conn.connect()
-        inputStream = conn.inputStream
-
-        if (inputStream != null) {
-            result = inputStream.toString()
-        } else {
-            result = "Error"
+    @Throws(IOException::class)
+    private fun downloadUrl(urlString: String): InputStream? {
+        val url = URL(urlString)
+        return (url.openConnection() as? HttpURLConnection)?.run {
+            readTimeout = 10000
+            connectTimeout = 15000
+            requestMethod = "GET"
+            doInput = true
+            // Starts the query
+            connect()
+            inputStream
         }
-
-        return result
     }
 
     private val coroutineHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -142,19 +162,34 @@ class GraphFragment : Fragment() {
 
     private fun loadChartData() {
 
+        // TODO: Use companion object with parameters.
+        val urlStringBuilder: StringBuilder = StringBuilder(GraphFragment.ENDPOINT + "?")
+        urlStringBuilder.append("ServiceKey=${GraphFragment.KEY}")
+        urlStringBuilder.append("&pageNo=1")
+        urlStringBuilder.append("&numOfRows=10")
+        urlStringBuilder.append("&startCreateDt=20200310")
+        urlStringBuilder.append("&endCreateDt=20200315")
+
+        val urlString: String = urlStringBuilder.toString()
+
         GlobalScope.launch(Dispatchers.Main + coroutineHandler) {
-            val data: String = async(Dispatchers.IO) {
+            val data: List<Covid19Item> = async(Dispatchers.IO) {
                 Log.d(TAG, "await!")
-
-
-
-
-
-
-                "Hello!"
+                downloadUrl(urlString)?.use { stream ->
+                    Covid19XmlParser().parse(stream)
+                } ?: emptyList()
             }.await()
 
-            Log.d(TAG, "Async has return value: $data")
+            Log.d(TAG, "Parse complete!")
+
+            if (data.isEmpty()) {
+                Log.d(TAG, "empty!")
+            } else {
+                for (it in data) {
+                    Log.d(TAG, it.stateDt ?: "null")
+                }
+            }
+
         }
 
 
@@ -180,25 +215,5 @@ class GraphFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_graph, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GraphFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GraphFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
