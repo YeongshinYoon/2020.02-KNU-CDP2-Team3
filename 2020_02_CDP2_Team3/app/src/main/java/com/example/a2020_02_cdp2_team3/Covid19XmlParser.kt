@@ -56,7 +56,9 @@ class Covid19XmlParser {
             }
         }
 
-        return entries
+        // We need reversed entries.
+        // return entries
+        return entries.reversed()
 
     }
 

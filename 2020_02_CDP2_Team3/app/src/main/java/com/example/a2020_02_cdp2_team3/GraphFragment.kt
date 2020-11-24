@@ -90,23 +90,8 @@ class GraphFragment : Fragment() {
             position = XAxis.XAxisPosition.BOTTOM
             textSize = 8f
             setDrawGridLines(true)
-            isGranularityEnabled = true
             granularity = 1f
-            // axisMinimum = 2f
-
-            valueFormatter = IndexAxisValueFormatter(xAxisLabels)
-        }
-
-        cumulativeCasesLineChart.apply {
-            axisRight.isEnabled = false
-            axisLeft.axisMaximum = 50f
-            legend.apply {
-                textSize = 15f
-                verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-                orientation = Legend.LegendOrientation.HORIZONTAL
-                setDrawInside(false)
-            }
+            valueFormatter = IndexAxisValueFormatter(xAxisLabels)  // x-axis labeling.
         }
 
         /*
@@ -145,8 +130,11 @@ class GraphFragment : Fragment() {
         val data = LineData(dataSets)
         cumulativeCasesLineChart.data = data
         cumulativeCasesLineChart.invalidate()
-
     }
+
+
+
+
 
     @Throws(IOException::class)
     private fun downloadUrl(urlString: String): InputStream? {
