@@ -32,6 +32,7 @@ class GraphFragment : Fragment() {
         const val KEY: String = "HpdkPZVpsnRoZJhs4Rv7eekrs%2BxXmZy1BqZwWXKZo8XmhF5ToGmyxvkI6XoTb9qahbKWosuRawWPuMMI0W3g9g%3D%3D"
     }
 
+    // 누적 확진/격리해제 현황 그래프
     private fun setCumulativeCasesLineChart(covid19Items: List<Covid19Item>) {
         val view = requireView()
         val cumulativeCasesLineChart = view.findViewById<LineChart>(R.id.cumulativeCasesLineChart)
@@ -100,7 +101,74 @@ class GraphFragment : Fragment() {
         cumulativeCasesLineChart.invalidate()
     }
 
+    // 일별 확진자 현황 그래프
+    private fun setDayCasesChart(covid19Items: List<Covid19Item>) {
+        val view = requireView()
+        val dayCasesChart = view.findViewById<LineChart>(R.id.dayCasesChart)
+        val dataSize = covid19Items.size
 
+        val xAxis = dayCasesChart.xAxis
+
+        /*
+         Get X labels (stateDt from covid19Items)
+         */
+        val xAxisLabels: ArrayList<String> = ArrayList()
+        for (it in covid19Items) {
+            xAxisLabels.add(it.stateDt ?: "null")
+        }
+
+        /*
+         Set graph styles + axis values.
+         */
+        xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            textSize = 8f
+            setDrawGridLines(true)
+            granularity = 1f
+            valueFormatter = IndexAxisValueFormatter(xAxisLabels)  // x-axis labeling.
+        }
+
+        /*
+         Construct graph with covid19Items: List<Covid19Item>.
+
+         Entry := each data
+         entries := ArrayList of Entry
+
+         lineDataSet := LineDataSet(entries, "y범례")
+
+         dataSets := ArrayList of ILineDataSet.
+         dataSets.add(lineDataSet)
+
+         data := LineData(dataSets)
+         chart.data = data
+         */
+        val entries = ArrayList<Entry>()
+        val diff = ArrayList<Float>()
+        for (i in 0 until dataSize) {
+            // Data is equal to diff array.
+            if (i == 0) continue;
+            diff.add(covid19Items.get(i).decideCnt!!.toFloat() - covid19Items.get(i - 1).decideCnt!!.toFloat())
+            entries.add(Entry(i.toFloat(), diff[i]))
+        }
+
+        val lineDataSet = LineDataSet(entries, "y범례")
+        lineDataSet.apply {
+            lineWidth = 2f
+            circleRadius = 6f
+            circleHoleColor = ContextCompat.getColor(context!!, R.color.purple_500)
+            color = ContextCompat.getColor(context!!, R.color.purple_700)
+            setCircleColor(ContextCompat.getColor(context!!, R.color.purple_200))
+            setDrawFilled(true)
+        }
+
+        val dataSets = ArrayList<ILineDataSet>()
+        dataSets.add(lineDataSet)
+
+        val data = LineData(dataSets)
+        dayCasesChart.data = data
+        dayCasesChart.setNoDataText("데이터를 불러오는 중입니다...")
+        dayCasesChart.invalidate()
+    }
 
 
 
@@ -155,6 +223,7 @@ class GraphFragment : Fragment() {
 
             // Set charts here.
             setCumulativeCasesLineChart(data)
+            setDayCasesChart(data)
         }
     }
 
