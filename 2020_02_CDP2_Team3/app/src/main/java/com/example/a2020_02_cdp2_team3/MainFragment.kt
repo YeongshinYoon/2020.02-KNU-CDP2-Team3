@@ -42,10 +42,10 @@ class MainFragment : Fragment() {
     }
 
     private fun loadMain() {
-        val th = Thread({
+        Thread{
             var api = CoronaAPI()
             api.main(this)
-        }).start()
+        }.start()
     }
 
     fun setCoronaInfo(coronaInfo: CoronaInfo) {
