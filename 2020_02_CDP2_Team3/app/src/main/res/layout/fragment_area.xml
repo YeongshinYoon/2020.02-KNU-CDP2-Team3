@@ -6,14 +6,49 @@
     tools:context=".area">
 
     <!-- TODO: Update blank fragment layout -->
-    <ScrollView
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/result_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        <TableRow>
 
+            <TextView
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:text=" 지역 " />
+            <EditText
+                android:id="@+id/inputarea"
+                android:hint="지역을 입력하시오(예 :서울 / 제주)"
+                ></EditText>
+
+        </TableRow>
+        <TableRow>
+            <Button
+                android:text="검색"
+                android:id="@+id/searcharea">
+            </Button>
+
+            <Button
+                android:id="@+id/backarea"
+                android:layout_width="320dp"
+                android:text="뒤로가기"></Button>
+        </TableRow>
+
+        <Button
+            android:id="@+id/Allsearcharea"
+            android:layout_width="299dp"
+            android:text="전체검색"></Button>
+
+        <!-- TODO: Update blank fragment layout -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/result_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+    </TableLayout>
 </FrameLayout>

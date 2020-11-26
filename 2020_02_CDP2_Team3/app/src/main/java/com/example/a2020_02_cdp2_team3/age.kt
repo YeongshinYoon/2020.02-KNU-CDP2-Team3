@@ -10,7 +10,11 @@ import android.widget.TextView
 import android.app.Activity
 import android.os.Build
 import android.os.StrictMode
+import android.view.SurfaceControl
+import android.widget.EditText
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentManager
+import kotlinx.coroutines.flow.callbackFlow
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -33,7 +37,6 @@ class age : Fragment() {
     private var param2: String? = null
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -42,14 +45,20 @@ class age : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onStart() {
         super.onStart()
         ageStart()
+
     }
 
-    private fun ageStart()
-    {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun ageStart() {
+        val search = view?.findViewById<Button>(R.id.search)
+        val back = view?.findViewById<Button>(R.id.backage)
+        val input = view?.findViewById<EditText>(R.id.inputage)
         val status1 = view?.findViewById(R.id.result_age) as TextView
+        val Allsearch = view?.findViewById<Button>(R.id.Allsearchage)
         var initem = false
         var inconfCase = false
         var increateDt = false
@@ -60,7 +69,7 @@ class age : Fragment() {
         var ingubun = false
         var inseq = false
         var inupdateDt = false
-        var number = 1
+
         var confCase: String? = null
         var confCaseRate: String? = null
         var createDt: String? = null
@@ -70,123 +79,279 @@ class age : Fragment() {
         var seq: String? = null
         var updateDt: String? = null
         var gubun: String? = null
-        try {
-            val url = URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
-            val paserCreator = XmlPullParserFactory.newInstance()
-            val parser = paserCreator.newPullParser()
-            parser.setInput(url.openStream(),null)
-            var paserEvent = parser.eventType
-            println("Loading..")
-            while (number != 103) {
-                when (paserEvent) {
-                    XmlPullParser.START_TAG -> {
-                        if (parser.name == "confCase") {
-                            inconfCase = true
+        var number = 1
+
+        back?.setOnClickListener() {
+            val manager = getChildFragmentManager()
+            status1.setText(
+                "정부에서 제공하는 API를 통하여" +
+                        "코로나에 대한 정보를 실시간으로 알려드립니다."
+            )
+
+        }
+
+
+
+
+
+
+
+        Allsearch?.setOnClickListener() {
+            try {
+                val url =
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+                val paserCreator = XmlPullParserFactory.newInstance()
+                val parser = paserCreator.newPullParser()
+                parser.setInput(url.openStream(), null)
+                var paserEvent = parser.eventType
+                println("Loading..")
+                while (number != 103) {
+                    when (paserEvent) {
+                        XmlPullParser.START_TAG -> {
+                            if (parser.name == "confCase") {
+                                inconfCase = true
+                            }
+                            if (parser.name == "confCaseRate") {
+                                inconfCaseRate = true
+                            }
+                            if (parser.name == "createDt") {
+                                increateDt = true
+                            }
+                            if (parser.name == "criticalRate") {
+                                incriticalRate = true
+                            }
+                            if (parser.name == "death") {
+                                indeath = true
+                            }
+                            if (parser.name == "deathRate") {
+                                indeathRate = true
+                            }
+                            if (parser.name == "gubun") {
+                                ingubun = true
+                            }
+                            if (parser.name == "seq") {
+                                inseq = true
+                            }
+                            if (parser.name == "updateDt") {
+                                inupdateDt = true
+                            }
+                            if (parser.name == "message") {
+                                status1.text = status1.text.toString() + "에러"
+                            }
                         }
-                        if (parser.name == "confCaseRate") {
-                            inconfCaseRate = true
+                        XmlPullParser.TEXT -> {
+                            if (inconfCase) {
+                                confCase = parser.text
+                                inconfCase = false
+                            }
+                            if (increateDt) {
+                                createDt = parser.text
+                                increateDt = false
+                            }
+                            if (incriticalRate) {
+                                criticalRate = parser.text
+                                incriticalRate = false
+                            }
+                            if (inconfCaseRate) {
+                                confCaseRate = parser.text
+                                inconfCaseRate = false
+                            }
+                            if (indeath) {
+                                deathRate = parser.text
+                                indeath = false
+                            }
+                            if (indeathRate) {
+                                death = parser.text
+                                indeathRate = false
+                            }
+                            if (ingubun) {
+                                gubun = parser.text
+                                ingubun = false
+                            }
+                            if (inseq) {
+                                seq = parser.text
+                                inseq = false
+                            }
+                            if (inupdateDt) {
+                                updateDt = parser.text
+                                inupdateDt = false
+                            }
                         }
-                        if (parser.name == "createDt") {
-                            increateDt = true
+                        XmlPullParser.END_TAG -> {
+                            if (parser.name == "item") {
+                                status1.text = """${status1.text}
+                         확진자 : $confCase
+                         확진률: $confCaseRate
+                         신규확진자 : $createDt
+                         치명률 : $criticalRate
+                         사망자 : $death
+                         사망률 : $deathRate
+                         번호 : $seq    $number
+                         수정일 : $updateDt
+                        연령별 : $gubun 
+                        -----------------------------------------------
+                        """
+
+                                initem = false
+
+                            }
+                            number++
                         }
-                        if (parser.name == "criticalRate") {
-                            incriticalRate = true
-                        }
-                        if (parser.name == "death") {
-                            indeath = true
-                        }
-                        if (parser.name == "deathRate") {
-                            indeathRate = true
-                        }
-                        if (parser.name == "gubun") {
-                            ingubun = true
-                        }
-                        if (parser.name == "seq") {
-                            inseq = true
-                        }
-                        if (parser.name == "updateDt") {
-                            inupdateDt = true
-                        }
-                        if (parser.name == "message") {
-                            status1.text = status1.text.toString() + "에러"
-                        }
+
+
+
                     }
-                    XmlPullParser.TEXT -> {
-                        if (inconfCase) {
-                            confCase = parser.text
-                            inconfCase = false
-                        }
-                        if (increateDt) {
-                            createDt = parser.text
-                            increateDt = false
-                        }
-                        if (incriticalRate) {
-                            criticalRate = parser.text
-                            incriticalRate = false
-                        }
-                        if (inconfCaseRate) {
-                            confCaseRate = parser.text
-                            inconfCaseRate = false
-                        }
-                        if (indeath) {
-                            deathRate = parser.text
-                            indeath = false
-                        }
-                        if (indeathRate) {
-                            death = parser.text
-                            indeathRate = false
-                        }
-                        if (ingubun) {
-                            gubun = parser.text
-                            ingubun = false
-                        }
-                        if (inseq) {
-                            seq = parser.text
-                            inseq = false
-                        }
-                        if (inupdateDt) {
-                            updateDt = parser.text
-                            inupdateDt = false
-                        }
-                    }
-                    XmlPullParser.END_TAG -> {
-                        if (parser.name == "item") {
-                            status1.text = """${status1.text}확진자 : $confCase
- 확진률: $confCaseRate
- 신규확진자 : $createDt
- 치명률 : $criticalRate
- 사망자 : $death
- 사망률 : $deathRate
- 번호 : $seq
- 수정일 : $updateDt
-연령별 : $gubun
---------------------
-"""
-                            initem = false
-                        }
-                        number++ //하나의 status1
-                    }
+                    paserEvent = parser.next()
                 }
-                paserEvent = parser.next()
+            } catch (e: XmlPullParserException) {
+                status1.text = "에러"
+            } catch (e: IOException) {
+                status1.text = "에러"
             }
-        }
-        catch (e: XmlPullParserException) {
-            status1.text = "에러"
-        } catch (e: IOException) {
-            status1.text = "에러"
+            returnTransition
         }
 
 
 
 
-    }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+        search?.setOnClickListener() {
+
+            var intresult: Int? = null
+            val inputresult = input?.text.toString()
+            if (inputresult == "0") intresult = 13
+            if (inputresult == "10") intresult = 23
+            if (inputresult == "20") intresult = 33
+            if (inputresult == "30") intresult = 43
+            if (inputresult == "40") intresult = 53
+            if (inputresult == "50") intresult = 63
+            if (inputresult == "60") intresult = 73
+            if (inputresult == "70") intresult = 83
+            if (inputresult == "80") intresult = 93
+            if (inputresult == "90") intresult = 93
+
+            try {
+                val url =
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+                val paserCreator = XmlPullParserFactory.newInstance()
+                val parser = paserCreator.newPullParser()
+                parser.setInput(url.openStream(), null)
+                var paserEvent = parser.eventType
+                println("Loading..")
+                while (number != 103) {
+                    when (paserEvent) {
+                        XmlPullParser.START_TAG -> {
+                            if (parser.name == "confCase") {
+                                inconfCase = true
+                            }
+                            if (parser.name == "confCaseRate") {
+                                inconfCaseRate = true
+                            }
+                            if (parser.name == "createDt") {
+                                increateDt = true
+                            }
+                            if (parser.name == "criticalRate") {
+                                incriticalRate = true
+                            }
+                            if (parser.name == "death") {
+                                indeath = true
+                            }
+                            if (parser.name == "deathRate") {
+                                indeathRate = true
+                            }
+                            if (parser.name == "gubun") {
+                                ingubun = true
+                            }
+                            if (parser.name == "seq") {
+                                inseq = true
+                            }
+                            if (parser.name == "updateDt") {
+                                inupdateDt = true
+                            }
+                            if (parser.name == "message") {
+                                status1.text = status1.text.toString() + "에러"
+                            }
+                        }
+                        XmlPullParser.TEXT -> {
+                            if (inconfCase) {
+                                confCase = parser.text
+                                inconfCase = false
+                            }
+                            if (increateDt) {
+                                createDt = parser.text
+                                increateDt = false
+                            }
+                            if (incriticalRate) {
+                                criticalRate = parser.text
+                                incriticalRate = false
+                            }
+                            if (inconfCaseRate) {
+                                confCaseRate = parser.text
+                                inconfCaseRate = false
+                            }
+                            if (indeath) {
+                                deathRate = parser.text
+                                indeath = false
+                            }
+                            if (indeathRate) {
+                                death = parser.text
+                                indeathRate = false
+                            }
+                            if (ingubun) {
+                                gubun = parser.text
+                                ingubun = false
+                            }
+                            if (inseq) {
+                                seq = parser.text
+                                inseq = false
+                            }
+                            if (inupdateDt) {
+                                updateDt = parser.text
+                                inupdateDt = false
+                            }
+                        }
+                        XmlPullParser.END_TAG -> {
+                            if ((parser.name == "item") && (number == intresult)) {
+                                status1.text = """${status1.text}
+                         확진자 : $confCase
+                         확진률: $confCaseRate
+                         신규확진자 : $createDt
+                         치명률 : $criticalRate
+                         사망자 : $death
+                         사망률 : $deathRate
+                         번호 : $seq    $number
+                         수정일 : $updateDt
+                        연령별 : $gubun 
+                        -----------------------------------------------
+                        """
+
+                                initem = false
+
+                            }
+                            number++
 
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_age, container, false)
+                        }
+                    }
+                    paserEvent = parser.next()
+                }
+            } catch (e: XmlPullParserException) {
+                status1.text = "에러"
+            } catch (e: IOException) {
+                status1.text = "에러"
+            }
+            returnTransition
+        }
+
     }
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+
+
+            // Inflate the layout for this fragment
+            return inflater.inflate(R.layout.fragment_age, container, false)
+        }
 
     companion object {
         /**
