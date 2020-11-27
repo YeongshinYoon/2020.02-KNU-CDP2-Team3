@@ -52,7 +52,8 @@ class area : Fragment() {
         val input = view?.findViewById<EditText>(R.id.inputarea)
         val status1 = view?.findViewById(R.id.result_area) as TextView
         val Allsearch = view?.findViewById<Button>(R.id.Allsearcharea)
-        status1.setTextColor(Color.parseColor("#006400"))
+        val areacolor= view?.findViewById(R.id.areaColor) as TextView
+
 
 
 
@@ -72,7 +73,6 @@ class area : Fragment() {
             var instdDay = false
             var inupdateDt = false
 
-
             var createDt: String? = null
             var deathCnt: String? = null
             var defCnt: String? = null
@@ -87,6 +87,7 @@ class area : Fragment() {
             var stdDay: String? = null
             var updateDt: String? = null
         Allsearch?.setOnClickListener(){
+            status1.setTextColor(Color.parseColor("#006400"))
             StrictMode.enableDefaults()
             try {
                 val url =
@@ -216,6 +217,9 @@ class area : Fragment() {
   지역발생수    : $localOccCnt
 -------------------------
 """
+
+
+
                                 initem = false
                             }
                         }
@@ -234,6 +238,7 @@ class area : Fragment() {
         }
         search?.setOnClickListener()
         {
+            status1.setTextColor(Color.parseColor("#006400"))
             val inputresult = input?.text.toString()
             try {
                 val url =
@@ -347,7 +352,17 @@ class area : Fragment() {
                         }
                         XmlPullParser.END_TAG -> {
                             if ((parser.name == "item")&&(inputresult==gubun)) {
-
+  var defCntNum= Integer.parseInt(localOccCnt.toString())
+  if((defCntNum==0)){
+      areacolor.setBackgroundColor(Color.parseColor("#7CFC00"))
+      areacolor.setText("상대적으로 안전한 지역입니다. 위험도 10% ")}
+                                if((defCntNum>0)&&(3<defCntNum)){
+                                    areacolor.setBackgroundColor(Color.parseColor("#FFFF00"))
+                                 areacolor.setText("소규모 확진자가 있습니다. 위험도 30%")}
+                                if((3<=defCntNum)&&(5>defCntNum)){  areacolor.setBackgroundColor(Color.parseColor("#FF6347"))
+                                    areacolor.setText("외출하실 때 마스크를 꼭 착용하세요. 위험도 60%")}
+                                if(5<=defCntNum){  areacolor.setBackgroundColor(Color.parseColor("#FF0000"))
+                                    areacolor.setText("오늘은 외출금지를 권장합니다. 위험도 80%")}
                                 status1?.text = """${status1?.text}
 -$gubun 지역의 실시간 코로나 현황입니다.-
   등록일시      : $createDt
@@ -362,7 +377,7 @@ class area : Fragment() {
   격리중 환자수 : $isolingCnt
   해외유입수    : $overFlowCnt
   지역발생수    : $localOccCnt
-
+              
 """
                                 initem = false
                             }

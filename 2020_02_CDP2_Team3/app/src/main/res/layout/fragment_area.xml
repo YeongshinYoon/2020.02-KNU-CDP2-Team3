@@ -34,6 +34,11 @@
                 android:text="전체검색"></Button>
 
         </TableRow>
+        <TextView
+            android:id="@+id/areaColor"
+            android:hint="지역의 코로나 감염위험정도에 따라 빨강 / 노랑 / 초록색으로 배경화면이 변경됩니다."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
 
 
         <!-- TODO: Update blank fragment layout -->
@@ -41,11 +46,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/result_area"
-                android:textSize="18dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/result_area"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         </ScrollView>
     </TableLayout>
