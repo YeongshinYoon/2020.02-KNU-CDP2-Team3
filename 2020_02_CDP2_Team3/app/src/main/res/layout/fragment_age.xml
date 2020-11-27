@@ -27,17 +27,13 @@
            android:text="검색"
            android:id="@+id/search">
        </Button>
-
            <Button
-               android:id="@+id/backage"
-               android:layout_width="320dp"
-               android:text="뒤로가기"></Button>
+               android:id="@+id/Allsearchage"
+               android:layout_width="299dp"
+               android:text="전체검색">
+</Button>
        </TableRow>
 
-       <Button
-           android:id="@+id/Allsearchage"
-           android:layout_width="299dp"
-           android:text="전체검색"></Button>
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
@@ -46,6 +42,7 @@
 
         <TextView
             android:id="@+id/result_age"
+            android:textSize="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

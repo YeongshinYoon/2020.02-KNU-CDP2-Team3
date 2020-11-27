@@ -42,7 +42,9 @@ class DetailFragment : Fragment() {
         val btn2 = view?.findViewById<Button>(R.id.age)
         val btn3 = view?.findViewById<Button>(R.id.area)
         val manager = getChildFragmentManager()
-        val transaction = manager.beginTransaction()
+
+
+
 
         btn1?.setOnClickListener() {
            childFragmentManager.beginTransaction().replace(R.id.child_fragment,sex()).commit();

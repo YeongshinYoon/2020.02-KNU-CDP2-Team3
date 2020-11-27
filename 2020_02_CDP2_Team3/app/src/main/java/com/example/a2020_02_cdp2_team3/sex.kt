@@ -1,5 +1,6 @@
 package com.example.a2020_02_cdp2_team3
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -48,10 +48,10 @@ class sex : Fragment() {
     private fun sexStart()
     {
         val search = view?.findViewById<Button>(R.id.searchsex)
-        val back = view?.findViewById<Button>(R.id.backsex)
         val input = view?.findViewById<EditText>(R.id.inputsex)
         val status1 = view?.findViewById(R.id.result_sex) as TextView
         val Allsearch = view?.findViewById<Button>(R.id.Allsearchsex)
+        status1.setTextColor(Color.parseColor("#006400"))
 
 
             var initem = false
@@ -159,15 +159,15 @@ class sex : Fragment() {
                         XmlPullParser.END_TAG -> {
                             if (parser.name == "item") {
                                 if ((number == 103)||(number==113)) {
-                                    status1.text = """${status1.text}확진자 : $confCase
- 확진률: $confCaseRate
- 신규확진자 : $createDt
- 치명률 : $criticalRate
- 사망자 : $death
- 사망률 : $deathRate
- 번호 : $seq 
- 수정일 : $updateDt
-성별별 : $gubun
+                                    status1.text = """${status1.text}
+  확진자    : $confCase
+  확진률    : $confCaseRate
+  신규확진자 : $createDt
+  치명률    : $criticalRate
+  사망자    : $death
+  사망률    : $deathRate
+  수정일    : $updateDt
+  성별별    : $gubun
 -------------------------
 """
                                     initem = false
@@ -186,11 +186,7 @@ class sex : Fragment() {
 
         }
 
-        back?.setOnClickListener()
-        {
-            status1.setText("남 / 여 에 따른 코로나 확진자 및 사망자 등 여러 정보를 " +
-                    "실시간으로 보여줍니다.")
-        }
+
         search?.setOnClickListener() {
             var intresult: String? = null
             val inputresult = input?.text.toString()
@@ -282,16 +278,17 @@ class sex : Fragment() {
                         XmlPullParser.END_TAG -> {
                             if (parser.name == "item") {
                                 if (gubun==intresult) {
-                                    status1.text = """${status1.text}확진자 : $confCase
- 확진률: $confCaseRate
- 신규확진자 : $createDt
- 치명률 : $criticalRate
- 사망자 : $death
- 사망률 : $deathRate
- 번호 : $seq 
- 수정일 : $updateDt
-성별별 : $gubun
--------------------------
+                                    status1.text = """${status1.text}
+-$gubun 에 대한 실시간 코로나 현황입니다.-
+  확진자    : $confCase
+  확진률    : $confCaseRate
+  신규확진자 : $createDt
+  치명률    : $criticalRate
+  사망자    : $death
+  사망률    : $deathRate
+  수정일    : $updateDt
+  성별별    : $gubun
+
 """
                                     initem = false
                                 }

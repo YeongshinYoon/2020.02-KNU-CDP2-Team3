@@ -16,7 +16,7 @@
                 android:text=" 성별 " />
            <EditText
                android:id="@+id/inputsex"
-               android:hint="성별을 입력하시오(예 : 남자 M: 여자 A)"
+               android:hint="성별을 입력하시오(예 : 남자 , 여자 )"
                ></EditText>
 
         </TableRow>
@@ -27,15 +27,13 @@
             </Button>
 
             <Button
-                android:id="@+id/backsex"
-                android:layout_width="320dp"
-                android:text="뒤로가기"></Button>
+                android:id="@+id/Allsearchsex"
+                android:layout_width="299dp"
+                android:layout_height="match_parent"
+                android:text="전체검색"></Button>
+
         </TableRow>
 
-        <Button
-            android:id="@+id/Allsearchsex"
-            android:layout_width="299dp"
-            android:text="전체검색"></Button>
 
         <!-- TODO: Update blank fragment layout -->
         <ScrollView
@@ -44,8 +42,9 @@
 
             <TextView
                 android:id="@+id/result_sex"
+                android:textSize="18dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
         </ScrollView>
     </TableLayout>

@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.app.Activity
+import android.graphics.Color
 import android.os.Build
 import android.os.StrictMode
 import android.view.SurfaceControl
 import android.widget.EditText
+import androidx.activity.OnBackPressedDispatcher
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.replace
+import com.example.a2020_02_cdp2_team3.R.id.Allsearchage
 import kotlinx.coroutines.flow.callbackFlow
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -55,10 +59,9 @@ class age : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun ageStart() {
         val search = view?.findViewById<Button>(R.id.search)
-        val back = view?.findViewById<Button>(R.id.backage)
         val input = view?.findViewById<EditText>(R.id.inputage)
         val status1 = view?.findViewById(R.id.result_age) as TextView
-        val Allsearch = view?.findViewById<Button>(R.id.Allsearchage)
+        val Allsearch = view?.findViewById<Button>(Allsearchage)
         var initem = false
         var inconfCase = false
         var increateDt = false
@@ -81,14 +84,7 @@ class age : Fragment() {
         var gubun: String? = null
         var number = 1
 
-        back?.setOnClickListener() {
-            val manager = getChildFragmentManager()
-            status1.setText(
-                "정부에서 제공하는 API를 통하여" +
-                        "코로나에 대한 정보를 실시간으로 알려드립니다."
-            )
 
-        }
 
 
 
@@ -97,6 +93,8 @@ class age : Fragment() {
 
 
         Allsearch?.setOnClickListener() {
+            status1.setTextColor(Color.parseColor("#006400"))
+            StrictMode.enableDefaults()
             try {
                 val url =
                     URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
@@ -180,17 +178,15 @@ class age : Fragment() {
                         XmlPullParser.END_TAG -> {
                             if (parser.name == "item") {
                                 status1.text = """${status1.text}
-                         확진자 : $confCase
-                         확진률: $confCaseRate
-                         신규확진자 : $createDt
-                         치명률 : $criticalRate
-                         사망자 : $death
-                         사망률 : $deathRate
-                         번호 : $seq    $number
-                         수정일 : $updateDt
-                        연령별 : $gubun 
-                        -----------------------------------------------
-                        """
+  확진자   : $confCase
+  확진률   :$confCaseRate
+  신규확진 : $createDt
+  치명률   : $criticalRate
+  사망자   : $death
+  사망률   : $deathRate
+  수정일   : $updateDt
+  연령별   : $gubun 
+-----------------------------------------------"""
 
                                 initem = false
 
@@ -228,8 +224,10 @@ class age : Fragment() {
             if (inputresult == "70") intresult = 83
             if (inputresult == "80") intresult = 93
             if (inputresult == "90") intresult = 93
+            status1.setTextColor(Color.parseColor("#006400"))
 
             try {
+                StrictMode.enableDefaults()
                 val url =
                     URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
                 val paserCreator = XmlPullParserFactory.newInstance()
@@ -312,18 +310,16 @@ class age : Fragment() {
                         XmlPullParser.END_TAG -> {
                             if ((parser.name == "item") && (number == intresult)) {
                                 status1.text = """${status1.text}
-                         확진자 : $confCase
-                         확진률: $confCaseRate
-                         신규확진자 : $createDt
-                         치명률 : $criticalRate
-                         사망자 : $death
-                         사망률 : $deathRate
-                         번호 : $seq    $number
-                         수정일 : $updateDt
-                        연령별 : $gubun 
-                        -----------------------------------------------
-                        """
-
+- $gubun 연령에 대한 실시간 코로나 현황입니다.-
+  확진자   : $confCase
+  확진률   :$confCaseRate
+  신규확진 : $createDt
+  치명률   : $criticalRate
+  사망자   : $death
+  사망률   : $deathRate
+  수정일   : $updateDt
+  연령별   : $gubun 
+ """
                                 initem = false
 
                             }
@@ -339,9 +335,9 @@ class age : Fragment() {
             } catch (e: IOException) {
                 status1.text = "에러"
             }
-            returnTransition
-        }
 
+        }
+        return
     }
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -374,4 +370,8 @@ class age : Fragment() {
     }
 
 }
+
+
+
+
 

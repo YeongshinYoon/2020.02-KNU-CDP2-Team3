@@ -1,7 +1,9 @@
 
 package com.example.a2020_02_cdp2_team3
 
+import android.graphics.Color
 import android.os.Bundle
+import android.os.StrictMode
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +11,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 import java.net.URL
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -44,11 +46,13 @@ class area : Fragment() {
     }
     private fun areaStart()
     {
+        StrictMode.enableDefaults()
         val search = view?.findViewById<Button>(R.id.searcharea)
-        val back = view?.findViewById<Button>(R.id.backarea)
+
         val input = view?.findViewById<EditText>(R.id.inputarea)
         val status1 = view?.findViewById(R.id.result_area) as TextView
         val Allsearch = view?.findViewById<Button>(R.id.Allsearcharea)
+        status1.setTextColor(Color.parseColor("#006400"))
 
 
 
@@ -83,6 +87,7 @@ class area : Fragment() {
             var stdDay: String? = null
             var updateDt: String? = null
         Allsearch?.setOnClickListener(){
+            StrictMode.enableDefaults()
             try {
                 val url =
                     URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=vTyNr6s%2FAnbthjWjdQwjXtaO4qcHv6fDx5WG76mYO0HNVlKx8lICPVvc6%2BYUg929269dQ3qX3srEyhqZvM%2F%2Fdw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200410&endCreateDt=20200410")
@@ -196,19 +201,19 @@ class area : Fragment() {
                         XmlPullParser.END_TAG -> {
                             if (parser.name == "item"){
 
-                                status1?.text = """${status1?.text}
- 등록일시: $createDt
- 사망자 수 : $deathCnt
- 시/도 : $gubun
- 전일대비증감률 : $incDec
- 격리해제수 : $isolClearCnt
- 10만명당발생률: $qurRate
- 기준일시: $stdDay 
- 수정일시: $updateDt
- 확진자 수: $defCnt
- 격리중 환자수: $isolingCnt
- 해외유입수 : $overFlowCnt
- 지역발생수 : $localOccCnt
+                                status1?.text ="""${status1?.text}
+  등록일시      : $createDt
+  사망자 수     : $deathCnt
+  시/도         : $gubun
+  전일대비증감률 : $incDec
+  격리해제수    : $isolClearCnt
+  10만명당발생률 : $qurRate
+  기준일시      : $stdDay 
+  수정일시      : $updateDt
+  확진자 수     : $defCnt
+  격리중 환자수 : $isolingCnt
+  해외유입수    : $overFlowCnt
+  지역발생수    : $localOccCnt
 -------------------------
 """
                                 initem = false
@@ -230,7 +235,6 @@ class area : Fragment() {
         search?.setOnClickListener()
         {
             val inputresult = input?.text.toString()
-
             try {
                 val url =
                     URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=vTyNr6s%2FAnbthjWjdQwjXtaO4qcHv6fDx5WG76mYO0HNVlKx8lICPVvc6%2BYUg929269dQ3qX3srEyhqZvM%2F%2Fdw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200410&endCreateDt=20200410")
@@ -342,22 +346,23 @@ class area : Fragment() {
 
                         }
                         XmlPullParser.END_TAG -> {
-                            if ((parser.name == "item")||inputresult==gubun) {
+                            if ((parser.name == "item")&&(inputresult==gubun)) {
 
                                 status1?.text = """${status1?.text}
- 등록일시: $createDt
- 사망자 수 : $deathCnt
- 시/도 : $gubun
- 전일대비증감률 : $incDec
- 격리해제수 : $isolClearCnt
- 10만명당발생률: $qurRate
- 기준일시: $stdDay 
- 수정일시: $updateDt
- 확진자 수: $defCnt
- 격리중 환자수: $isolingCnt
- 해외유입수 : $overFlowCnt
- 지역발생수 : $localOccCnt
--------------------------
+-$gubun 지역의 실시간 코로나 현황입니다.-
+  등록일시      : $createDt
+  사망자 수     : $deathCnt
+  시/도         : $gubun
+  전일대비증감률 : $incDec
+  격리해제수    : $isolClearCnt
+  10만명당발생률 : $qurRate
+  기준일시      : $stdDay 
+  수정일시      : $updateDt
+  확진자 수     : $defCnt
+  격리중 환자수 : $isolingCnt
+  해외유입수    : $overFlowCnt
+  지역발생수    : $localOccCnt
+
 """
                                 initem = false
                             }
@@ -372,9 +377,9 @@ class area : Fragment() {
             } catch (e: IOException) {
                 status1?.text = "에러"
             }
-
+            return@setOnClickListener
         }
-
+      return
     }
 
     companion object {

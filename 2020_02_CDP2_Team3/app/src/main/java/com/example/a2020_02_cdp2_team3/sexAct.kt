@@ -130,6 +130,7 @@ class sexAct : Activity() {
 연령별 : $gubun
 --------------------
 """
+
                             initem = false
                         }
                         number++ //하나의 status1
