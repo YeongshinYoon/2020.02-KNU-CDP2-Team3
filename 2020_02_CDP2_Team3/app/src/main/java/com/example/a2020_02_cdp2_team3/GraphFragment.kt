@@ -223,7 +223,7 @@ class GraphFragment : Fragment() {
 
             // Set charts here.
             setCumulativeCasesLineChart(data)
-            setDayCasesChart(data)
+            // setDayCasesChart(data)
         }
     }
 
