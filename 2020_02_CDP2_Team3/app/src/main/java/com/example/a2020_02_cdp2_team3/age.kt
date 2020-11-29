@@ -1,29 +1,24 @@
 package com.example.a2020_02_cdp2_team3
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
-import android.app.Activity
-import android.graphics.Color
-import android.os.Build
-import android.os.StrictMode
-import android.view.SurfaceControl
 import android.widget.EditText
-import androidx.activity.OnBackPressedDispatcher
+import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.replace
+import androidx.fragment.app.Fragment
 import com.example.a2020_02_cdp2_team3.R.id.Allsearchage
-import kotlinx.coroutines.flow.callbackFlow
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 import java.net.URL
+import java.text.SimpleDateFormat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,7 +67,8 @@ class age : Fragment() {
         var ingubun = false
         var inseq = false
         var inupdateDt = false
-
+        val Date = SimpleDateFormat("yyyyMMdd")
+        val EndDate: String = Date.format(System.currentTimeMillis())
         var confCase: String? = null
         var confCaseRate: String? = null
         var createDt: String? = null
@@ -97,7 +93,7 @@ class age : Fragment() {
             StrictMode.enableDefaults()
             try {
                 val url =
-                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=$&endCreateDt=$EndDate")
                 val paserCreator = XmlPullParserFactory.newInstance()
                 val parser = paserCreator.newPullParser()
                 parser.setInput(url.openStream(), null)
@@ -178,14 +174,14 @@ class age : Fragment() {
                         XmlPullParser.END_TAG -> {
                             if (parser.name == "item") {
                                 status1.text = """${status1.text}
-  확진자   : $confCase
-  확진률   :$confCaseRate
-  신규확진 : $createDt
-  치명률   : $criticalRate
-  사망자   : $death
-  사망률   : $deathRate
-  수정일   : $updateDt
-  연령별   : $gubun 
+  연령별      : $gubun 대
+  누적확진자  : $confCase 명
+  확진률      : $confCaseRate %
+  사망률      : $death %
+  사망자      : $deathRate 명
+  치명률      : $criticalRate %
+  날짜        : $createDt 
+   
 -----------------------------------------------"""
 
                                 initem = false
@@ -229,7 +225,7 @@ class age : Fragment() {
             try {
                 StrictMode.enableDefaults()
                 val url =
-                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=$&endCreateDt=$EndDate")
                 val paserCreator = XmlPullParserFactory.newInstance()
                 val parser = paserCreator.newPullParser()
                 parser.setInput(url.openStream(), null)
@@ -311,15 +307,15 @@ class age : Fragment() {
                             if ((parser.name == "item") && (number == intresult)) {
                                 status1.text = """${status1.text}
 - $gubun 연령에 대한 실시간 코로나 현황입니다.-
-  확진자   : $confCase
-  확진률   :$confCaseRate
-  신규확진 : $createDt
-  치명률   : $criticalRate
-  사망자   : $death
-  사망률   : $deathRate
-  수정일   : $updateDt
-  연령별   : $gubun 
- """
+  연령별      : $gubun 대
+  누적확진자  : $confCase 명
+  확진률      : $confCaseRate %
+  사망률      : $death %
+  사망자      : $deathRate 명
+  치명률      : $criticalRate %
+  날짜        : $createDt 
+   
+-----------------------------------------------"""
                                 initem = false
 
                             }
@@ -340,8 +336,8 @@ class age : Fragment() {
         return
     }
         override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+                inflater: LayoutInflater, container: ViewGroup?,
+                savedInstanceState: Bundle?
         ): View? {
 
 

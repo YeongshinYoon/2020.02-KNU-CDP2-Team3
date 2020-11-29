@@ -16,6 +16,7 @@ import java.io.IOException
 import java.lang.NullPointerException
 import java.net.URL
 import java.sql.Types.NULL
+import java.text.SimpleDateFormat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,7 +53,8 @@ class sex : Fragment() {
         val status1 = view?.findViewById(R.id.result_sex) as TextView
         val Allsearch = view?.findViewById<Button>(R.id.Allsearchsex)
         status1.setTextColor(Color.parseColor("#006400"))
-
+        val Date = SimpleDateFormat("yyyyMMdd")
+        val EndDate: String = Date.format(System.currentTimeMillis())
 
             var initem = false
             var inconfCase = false
@@ -78,7 +80,7 @@ class sex : Fragment() {
         Allsearch?.setOnClickListener(){
             try {
                 val url =
-                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=$&endCreateDt=$EndDate")
                 val paserCreator = XmlPullParserFactory.newInstance()
                 val parser = paserCreator.newPullParser()
                 parser.setInput(url.openStream(), null)
@@ -160,15 +162,17 @@ class sex : Fragment() {
                             if (parser.name == "item") {
                                 if ((number == 103)||(number==113)) {
                                     status1.text = """${status1.text}
-  확진자    : $confCase
-  확진률    : $confCaseRate
-  신규확진자 : $createDt
-  치명률    : $criticalRate
-  사망자    : $death
-  사망률    : $deathRate
-  수정일    : $updateDt
-  성별별    : $gubun
--------------------------
+  성별별      : $gubun
+  누적확진자   : $confCase 명
+  확진률      : $confCaseRate %
+  사망률      : $death %
+  사망자      : $deathRate 명
+  치명률      : $criticalRate %
+  날짜        : $createDt
+
+
+
+
 """
                                     initem = false
                                 }
@@ -197,7 +201,7 @@ class sex : Fragment() {
 
             try {
                 val url =
-                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200414")
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19GenAgeCaseInfJson?serviceKey=A2vwv2O8EWf4MCBQKD6bR4eVSjK0Jylzm0x5uedn553xDUchtjh%2F8uWq595vL8SYzGbB5ty0uUCWYQk1duB7pw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=\$&endCreateDt=$EndDate")
                 val paserCreator = XmlPullParserFactory.newInstance()
                 val parser = paserCreator.newPullParser()
                 parser.setInput(url.openStream(), null)
@@ -279,17 +283,17 @@ class sex : Fragment() {
                             if (parser.name == "item") {
                                 if (gubun==intresult) {
                                     status1.text = """${status1.text}
--$gubun 에 대한 실시간 코로나 현황입니다.-
-  확진자    : $confCase
-  확진률    : $confCaseRate
-  신규확진자 : $createDt
-  치명률    : $criticalRate
-  사망자    : $death
-  사망률    : $deathRate
-  수정일    : $updateDt
-  성별별    : $gubun
+ - $gubun 에 대한 실시간 코로나 현황입니다.-
+  성별별      : $gubun
+  누적확진자   : $confCase 명
+  확진률      : $confCaseRate %
+  사망률      : $death %
+  사망자      : $deathRate 명
+  치명률      : $criticalRate %
+  날짜        : $createDt
 
 """
+
                                     initem = false
                                 }
                             }

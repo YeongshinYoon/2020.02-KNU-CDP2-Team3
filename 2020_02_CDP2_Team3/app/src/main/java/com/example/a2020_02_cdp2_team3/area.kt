@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 import java.net.URL
+import java.text.SimpleDateFormat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,6 +49,8 @@ class area : Fragment() {
     {
         StrictMode.enableDefaults()
         val search = view?.findViewById<Button>(R.id.searcharea)
+        val Date = SimpleDateFormat("yyyyMMdd")
+        val EndDate: String = Date.format(System.currentTimeMillis())
 
         val input = view?.findViewById<EditText>(R.id.inputarea)
         val status1 = view?.findViewById(R.id.result_area) as TextView
@@ -61,7 +64,7 @@ class area : Fragment() {
             var initem = false
             var increateDt = false
             var indeathCnt = false
-            var indefCnf = false
+            var indefCnt = false
             var ingubun = false
             var inincDec = false
             var inisolClrearCnt = false
@@ -91,7 +94,7 @@ class area : Fragment() {
             StrictMode.enableDefaults()
             try {
                 val url =
-                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=vTyNr6s%2FAnbthjWjdQwjXtaO4qcHv6fDx5WG76mYO0HNVlKx8lICPVvc6%2BYUg929269dQ3qX3srEyhqZvM%2F%2Fdw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200410&endCreateDt=20200410")
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=vTyNr6s%2FAnbthjWjdQwjXtaO4qcHv6fDx5WG76mYO0HNVlKx8lICPVvc6%2BYUg929269dQ3qX3srEyhqZvM%2F%2Fdw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=$EndDate&endCreateDt=$EndDate")
                 val paserCreator = XmlPullParserFactory.newInstance()
                 val parser = paserCreator.newPullParser()
                 parser.setInput(url.openStream(), null);
@@ -107,8 +110,8 @@ class area : Fragment() {
                             if (parser.name == "deathCnt") {
                                 indeathCnt = true
                             }
-                            if (parser.name == "defCnf") {
-                                indefCnf = true
+                            if (parser.name == "defCnt") {
+                                indefCnt = true
                             }
                             if (parser.name == "gubun") {
                                 ingubun = true
@@ -116,7 +119,7 @@ class area : Fragment() {
                             if (parser.name == "incDec") {
                                 inincDec = true
                             }
-                            if (parser.name == "olClearCnt") {
+                            if (parser.name == "isolClearCnt") {
                                 inisolClrearCnt = true
                             }
                             if (parser.name == "isolIngCnt") {
@@ -153,9 +156,9 @@ class area : Fragment() {
                                 deathCnt = parser.text
                                 indeathCnt = false
                             }
-                            if (indefCnf) {
+                            if (indefCnt) {
                                 defCnt = parser.text
-                                indefCnf = false
+                                indefCnt = false
                             }
                             if (ingubun) {
                                 gubun = parser.text
@@ -203,18 +206,18 @@ class area : Fragment() {
                             if (parser.name == "item"){
 
                                 status1?.text ="""${status1?.text}
+  신규확진자    : $localOccCnt 명
   등록일시      : $createDt
-  사망자 수     : $deathCnt
+  사망자 수     : $deathCnt 명
   시/도         : $gubun
-  전일대비증감률 : $incDec
-  격리해제수    : $isolClearCnt
-  10만명당발생률 : $qurRate
-  기준일시      : $stdDay 
-  수정일시      : $updateDt
-  확진자 수     : $defCnt
-  격리중 환자수 : $isolingCnt
-  해외유입수    : $overFlowCnt
-  지역발생수    : $localOccCnt
+  전일대비증감률 : $incDec %
+  격리해제수     : $isolClearCnt 명
+  10만명당발생률 : $qurRate %
+  기준일시      : $stdDay
+  누적확진자    : $defCnt 명
+  격리중 환자수 : $isolingCnt 명
+  해외유입수    : $overFlowCnt 명
+  
 -------------------------
 """
 
@@ -242,7 +245,7 @@ class area : Fragment() {
             val inputresult = input?.text.toString()
             try {
                 val url =
-                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=vTyNr6s%2FAnbthjWjdQwjXtaO4qcHv6fDx5WG76mYO0HNVlKx8lICPVvc6%2BYUg929269dQ3qX3srEyhqZvM%2F%2Fdw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=20200410&endCreateDt=20200410")
+                    URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=vTyNr6s%2FAnbthjWjdQwjXtaO4qcHv6fDx5WG76mYO0HNVlKx8lICPVvc6%2BYUg929269dQ3qX3srEyhqZvM%2F%2Fdw%3D%3D&pageNo=1&numOfRows=10&startCreateDt=$EndDate&endCreateDt=$EndDate")
                 val paserCreator = XmlPullParserFactory.newInstance()
                 val parser = paserCreator.newPullParser()
                 parser.setInput(url.openStream(), null);
@@ -258,8 +261,8 @@ class area : Fragment() {
                             if (parser.name == "deathCnt") {
                                 indeathCnt = true
                             }
-                            if (parser.name == "defCnf") {
-                                indefCnf = true
+                            if (parser.name == "defCnt") {
+                                indefCnt = true
                             }
                             if (parser.name == "gubun") {
                                 ingubun = true
@@ -267,7 +270,7 @@ class area : Fragment() {
                             if (parser.name == "incDec") {
                                 inincDec = true
                             }
-                            if (parser.name == "olClearCnt") {
+                            if (parser.name == "isolClearCnt") {
                                 inisolClrearCnt = true
                             }
                             if (parser.name == "isolIngCnt") {
@@ -304,9 +307,9 @@ class area : Fragment() {
                                 deathCnt = parser.text
                                 indeathCnt = false
                             }
-                            if (indefCnf) {
+                            if (indefCnt) {
                                 defCnt = parser.text
-                                indefCnf = false
+                                indefCnt = false
                             }
                             if (ingubun) {
                                 gubun = parser.text
@@ -365,18 +368,19 @@ class area : Fragment() {
                                     areacolor.setText("오늘은 외출금지를 권장합니다. 위험도 80%")}
                                 status1?.text = """${status1?.text}
 -$gubun 지역의 실시간 코로나 현황입니다.-
+  신규확진자    : $localOccCnt 명
   등록일시      : $createDt
-  사망자 수     : $deathCnt
+  사망자 수     : $deathCnt 명
   시/도         : $gubun
-  전일대비증감률 : $incDec
-  격리해제수    : $isolClearCnt
-  10만명당발생률 : $qurRate
-  기준일시      : $stdDay 
-  수정일시      : $updateDt
-  확진자 수     : $defCnt
-  격리중 환자수 : $isolingCnt
-  해외유입수    : $overFlowCnt
-  지역발생수    : $localOccCnt
+  전일대비증감률 : $incDec %
+  격리해제수     : $isolClearCnt 명
+  10만명당발생률 : $qurRate %
+  기준일시      : $stdDay
+  누적확진자    : $defCnt 명
+  격리중 환자수 : $isolingCnt 명
+  해외유입수    : $overFlowCnt 명
+  
+-------------------------
               
 """
                                 initem = false
