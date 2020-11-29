@@ -1,5 +1,5 @@
 package com.example.a2020_02_cdp2_team3
-//1127
+//1129
 //manifest-meta  , gradle2 , color
 import android.graphics.Color
 import android.os.Build
@@ -40,6 +40,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private lateinit var mMap: GoogleMap
     private lateinit var mV: MapView
+    @RequiresApi(Build.VERSION_CODES.O)//now
+    var today: String = LocalDate.now().toString().replace("-", "")
+    var rday : String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -60,7 +63,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onStart()
         val v = requireView()
         val tt = v.findViewById<TextView>(R.id.textView)
-        tt.setText(LocalDate.now().minusDays(1).toString() + " 기준 격리중 환자수" )
+        tt.setText(today+" 격리중 환자수 " )
         mV.onStart()
     }
 
@@ -117,7 +120,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)//addheatmap
+    @RequiresApi(Build.VERSION_CODES.O)//readItems
     override fun onMapReady(g: GoogleMap?) {
         mMap = g!!
         val Kor = LatLng(36.2, 127.648)
@@ -130,144 +133,157 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     @RequiresApi(Build.VERSION_CODES.O)//now
     @Throws(JSONException::class)
     private fun readItems() {
-
-        val today: String = LocalDate.now().minusDays(1).toString().replace("-", "")
-        val url =
+        var count=0
+         val url =
             URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=psFE%2BPwSbc%2FFEXAPNwaTqTN4Mpzaw2Mi1%2BvvPZsbHb4DL8dEVba%2BAekHQwi9c%2FpTjHhlvBWfJ%2FM4e%2BnQsAe09w%3D%3D&pageNo=1&numOfRows=10&startCreateDt=${today}&endCreateDt=${today}")
         val urls: Document =
             DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.toString())
         urls.documentElement.normalize()
         val dataL: NodeList = urls.getElementsByTagName("item")
-        for (i in 0..dataL.length - 1) {
-            var n: Node = dataL.item(i)
-            if (n.getNodeType() == Node.ELEMENT_NODE) {
-                val e = n as Element
-                if (e.getElementsByTagName("gubun").item(0).textContent == "제주") {
+        if(dataL.length<19){
+            today = LocalDate.now().minusDays(1).toString().replace("-", "")
+            val url =
+                URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=psFE%2BPwSbc%2FFEXAPNwaTqTN4Mpzaw2Mi1%2BvvPZsbHb4DL8dEVba%2BAekHQwi9c%2FpTjHhlvBWfJ%2FM4e%2BnQsAe09w%3D%3D&pageNo=1&numOfRows=10&startCreateDt=${today}&endCreateDt=${today}")
+            val urls: Document =
+                DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.toString())
+            urls.documentElement.normalize()
+            val dataL: NodeList = urls.getElementsByTagName("item")
+        }
+        if(dataL.length>17) {
+           // println(dataL.length.toString())
+            for (i in 0..dataL.length - 1) {
+                var n: Node = dataL.item(i)
+                if (n.getNodeType() == Node.ELEMENT_NODE) {
+                    val e = n as Element
+                    if (e.getElementsByTagName("gubun").item(0).textContent == "제주") {
+                        count++
+                        makeC(
+                            LatLng(33.247167, 126.5510603),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(33.247167, 126.5510603),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "경남") {
+                        count++
+                        makeC(
+                            LatLng(35.1051, 128.0628),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "경남") {
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "경북") {
+                        count++
+                        makeC(
+                            LatLng(36.39519549728635, 128.7040785646239),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(35.1051, 128.0628),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "전남") {
+                        count++
+                        makeC(
+                            LatLng(34.745832171051205, 126.73774542411417),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "경북") {
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "전북") {
+                        count++
+                        makeC(
+                            LatLng(35.872550642194895, 127.19990302943614),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(36.39519549728635, 128.7040785646239),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "전남") {
-
-
-                    makeC(
-                        LatLng(34.745832171051205, 126.73774542411417),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "전북") {
-
-                    makeC(
-                        LatLng(35.872550642194895, 127.19990302943614),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "충남") {
-
-                    makeC(
-                        LatLng(36.57769957172524, 126.76365161576369),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "충남") {
+                        count++
+                        makeC(
+                            LatLng(36.57769957172524, 126.76365161576369),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
 
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "충북") {
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "충북") {
+                        count++
+                        makeC(
+                            LatLng(36.84098970153244, 127.69461258134841),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(36.84098970153244, 127.69461258134841),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "강원") {
+                        count++
+                        makeC(
+                            LatLng(37.32546635706039, 128.5310547237115),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "강원") {
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "경기") {
+                        count++
+                        makeC(
+                            LatLng(37.443699911687865, 127.41811002862957),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "세종") {
+                        count++
+                        makeC(
+                            LatLng(36.48030541968669, 127.28905685383258),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(37.32546635706039, 128.5310547237115),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "울산") {
+                        count++
+                        makeC(
+                            LatLng(35.564238142006666, 129.25772075060706),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "경기") {
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "대전") {
+                        count++
+                        makeC(
+                            LatLng(36.34942304516053, 127.39985242613885),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(37.443699911687865, 127.41811002862957),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "세종") {
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "광주") {
+                        count++
+                        makeC(
+                            LatLng(35.16722229901042, 126.8846651013883),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(36.48030541968669, 127.28905685383258),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "인천") {
+                        count++
+                        makeC(
+                            LatLng(37.438717724931266, 126.7628772872234),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "울산") {
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "대구") {
+                        count++
+                        makeC(
+                            LatLng(35.84781334428778, 128.55962924039264),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                    makeC(
-                        LatLng(35.564238142006666, 129.25772075060706),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "부산") {
+                        count++
+                        makeC(
+                            LatLng(35.137, 129.055),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
 
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "대전") {
-
-                    makeC(
-                        LatLng(36.34942304516053, 127.39985242613885),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "광주") {
-
-                    makeC(
-                        LatLng(35.16722229901042, 126.8846651013883),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "인천") {
-
-                    makeC(
-                        LatLng(37.438717724931266, 126.7628772872234),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "대구") {
-
-                    makeC(
-                        LatLng(35.84781334428778, 128.55962924039264),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "부산") {
-
-                    makeC(
-                        LatLng(35.137, 129.055),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                } else if (e.getElementsByTagName("gubun").item(0).textContent == "서울") {
-
-                    makeC(
-                        LatLng(37.5506, 126.991),
-                        e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
-                    )
-
-                }
-
-            }
-
-        }//dataL.for
-
+                    } else if (e.getElementsByTagName("gubun").item(0).textContent == "서울") {
+                        count++
+                        makeC(
+                            LatLng(37.5506, 126.991),
+                            e.getElementsByTagName("isolIngCnt").item(0).textContent.toDouble()
+                        )
+                        rday= e.getElementsByTagName("createDt").item(0).textContent
+                    }
+                    if(count>17){
+                        break
+                    }
+                }//ifE
+            }//dataL.for
+        }//if19
+        val v = requireView()
+        val tt = v.findViewById<TextView>(R.id.textView)
+        tt.append( rday+" 등록")
     }//read items
 
     private fun makeC(lat: LatLng, num: Double) {
@@ -292,6 +308,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 .strokeColor(c)
                 .fillColor(c)
         )
+
     }
 
 }
