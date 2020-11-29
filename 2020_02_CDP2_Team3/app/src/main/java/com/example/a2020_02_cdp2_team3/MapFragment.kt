@@ -134,23 +134,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     @Throws(JSONException::class)
     private fun readItems() {
         var count=0
-         val url =
-            URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=psFE%2BPwSbc%2FFEXAPNwaTqTN4Mpzaw2Mi1%2BvvPZsbHb4DL8dEVba%2BAekHQwi9c%2FpTjHhlvBWfJ%2FM4e%2BnQsAe09w%3D%3D&pageNo=1&numOfRows=10&startCreateDt=${today}&endCreateDt=${today}")
-        val urls: Document =
-            DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.toString())
+         var url = URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=psFE%2BPwSbc%2FFEXAPNwaTqTN4Mpzaw2Mi1%2BvvPZsbHb4DL8dEVba%2BAekHQwi9c%2FpTjHhlvBWfJ%2FM4e%2BnQsAe09w%3D%3D&pageNo=1&numOfRows=10&startCreateDt=${today}&endCreateDt=${today}")
+        var urls: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.toString())
         urls.documentElement.normalize()
-        val dataL: NodeList = urls.getElementsByTagName("item")
+        var dataL: NodeList = urls.getElementsByTagName("item")
         if(dataL.length<19){
+            //println(dataL.length.toString())
             today = LocalDate.now().minusDays(1).toString().replace("-", "")
-            val url =
+             url =
                 URL("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=psFE%2BPwSbc%2FFEXAPNwaTqTN4Mpzaw2Mi1%2BvvPZsbHb4DL8dEVba%2BAekHQwi9c%2FpTjHhlvBWfJ%2FM4e%2BnQsAe09w%3D%3D&pageNo=1&numOfRows=10&startCreateDt=${today}&endCreateDt=${today}")
-            val urls: Document =
-                DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.toString())
+             urls =DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.toString())
             urls.documentElement.normalize()
-            val dataL: NodeList = urls.getElementsByTagName("item")
+             dataL = urls.getElementsByTagName("item")
         }
         if(dataL.length>17) {
-           // println(dataL.length.toString())
             for (i in 0..dataL.length - 1) {
                 var n: Node = dataL.item(i)
                 if (n.getNodeType() == Node.ELEMENT_NODE) {
