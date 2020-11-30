@@ -80,6 +80,7 @@ class GraphFragment : Fragment() {
         for (i in 0 until dataSize) {
             entries.add(Entry(i.toFloat(), covid19Items.get(i).decideCnt!!.toFloat()))
         }
+        entries.removeAt(0);
 
         val lineDataSet = LineDataSet(entries, "y범례")
         lineDataSet.apply {
@@ -149,11 +150,7 @@ class GraphFragment : Fragment() {
             diff.add(covid19Items.get(i + 1).decideCnt!!.toFloat() - covid19Items.get(i).decideCnt!!.toFloat())
             entries.add(Entry(i.toFloat(), diff[i]))
         }
-        /*
-        for (i in 0 until dataSize) {
-            entries.add(Entry(i.toFloat(), covid19Items.get(i).decideCnt!!.toFloat()))
-        }
-         */
+        entries.removeAt(0);
 
         val lineDataSet = LineDataSet(entries, "y범례")
         lineDataSet.apply {
@@ -230,14 +227,13 @@ class GraphFragment : Fragment() {
             setDayCasesChart(data)
         }
     }
-
-
-    /*
-        ENTRY POINT
-     */
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /*
+            ENTRY POINT
+         */
         loadChartData()
     }
 
