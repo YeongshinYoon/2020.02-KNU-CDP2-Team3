@@ -2,11 +2,13 @@ package com.example.a2020_02_cdp2_team3
 
 import android.content.ContentValues.TAG
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.LineChart
@@ -25,6 +27,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
+import java.time.LocalDate
 
 class GraphFragment : Fragment() {
     companion object {
@@ -201,14 +204,22 @@ class GraphFragment : Fragment() {
         Log.d(TAG, "COROUTINE HANDLER! : $throwable")
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadChartData() {
+        var today: LocalDate = LocalDate.now()
+        var todayStr: String = today.toString().replace("-", "")
+        var todaym1: LocalDate = today.minusDays(1)
+        var todaym1Str: String = todaym1.toString().replace("-", "")
+        var todaym11: LocalDate = today.minusDays(11)
+        var todaym11Str: String = todaym11.toString().replace("-", "")
+
         // TODO: Use companion object with parameters.
         val urlStringBuilder: StringBuilder = StringBuilder(GraphFragment.ENDPOINT + "?")
         urlStringBuilder.append("ServiceKey=${GraphFragment.KEY}")
         urlStringBuilder.append("&pageNo=1")
         urlStringBuilder.append("&numOfRows=10")
-        urlStringBuilder.append("&startCreateDt=20201101")
-        urlStringBuilder.append("&endCreateDt=20201110")
+        urlStringBuilder.append("&startCreateDt=${todaym11Str}")
+        urlStringBuilder.append("&endCreateDt=${todaym1Str}")
 
         val urlString: String = urlStringBuilder.toString()
 
