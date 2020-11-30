@@ -38,22 +38,16 @@ class GraphFragment : Fragment() {
         val cumulativeCasesLineChart = view.findViewById<LineChart>(R.id.cumulativeCasesLineChart)
         val dataSize = covid19Items.size
 
-        /*
-         Configure xAxis.
-         */
+        // Configure xAxis.
         val xAxis = cumulativeCasesLineChart.xAxis
 
-        /*
-         Get X labels (stateDt from covid19Items)
-         */
+        // Get X labels (stateDt from covid19Items)
         val xAxisLabels: ArrayList<String> = ArrayList()
         for (it in covid19Items) {
             xAxisLabels.add(it.stateDt ?: "null")
         }
 
-        /*
-         Set graph styles + axis values.
-         */
+        // Set graph styles + axis values.
         xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
             textSize = 8f
@@ -86,9 +80,9 @@ class GraphFragment : Fragment() {
         lineDataSet.apply {
             lineWidth = 2f
             circleRadius = 6f
-            circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
-            color = ContextCompat.getColor(requireContext(), R.color.purple_700)
-            setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+            // circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
+            // color = ContextCompat.getColor(requireContext(), R.color.purple_700)
+            // setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
             setDrawFilled(true)
         }
 
@@ -109,17 +103,13 @@ class GraphFragment : Fragment() {
 
         val xAxis = dayCasesChart.xAxis
 
-        /*
-         Get X labels (stateDt from covid19Items)
-         */
+        // Get X labels (stateDt from covid19Items)
         val xAxisLabels: ArrayList<String> = ArrayList()
         for (it in covid19Items) {
             xAxisLabels.add(it.stateDt ?: "null")
         }
 
-        /*
-         Set graph styles + axis values.
-         */
+        // Set graph styles + axis values.
         xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
             textSize = 8f
@@ -156,9 +146,9 @@ class GraphFragment : Fragment() {
         lineDataSet.apply {
             lineWidth = 2f
             circleRadius = 6f
-            circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
-            color = ContextCompat.getColor(requireContext(), R.color.purple_700)
-            setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+            // circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
+            // color = ContextCompat.getColor(requireContext(), R.color.purple_700)
+            // setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
             setDrawFilled(true)
         }
 
@@ -170,8 +160,6 @@ class GraphFragment : Fragment() {
         dayCasesChart.setNoDataText("데이터를 불러오는 중입니다...")
         dayCasesChart.invalidate()
     }
-
-
 
     @Throws(IOException::class)
     private fun downloadUrl(urlString: String): InputStream? {
@@ -227,7 +215,7 @@ class GraphFragment : Fragment() {
             setDayCasesChart(data)
         }
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
