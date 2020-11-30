@@ -85,11 +85,10 @@ class GraphFragment : Fragment() {
         lineDataSet.apply {
             lineWidth = 2f
             circleRadius = 6f
-            circleHoleColor = ContextCompat.getColor(context!!, R.color.purple_500)
-            color = ContextCompat.getColor(context!!, R.color.purple_700)
-            setCircleColor(ContextCompat.getColor(context!!, R.color.purple_200))
+            circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
+            color = ContextCompat.getColor(requireContext(), R.color.purple_700)
+            setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
             setDrawFilled(true)
-            fillColor = Color.BLACK
         }
 
         val dataSets = ArrayList<ILineDataSet>()
@@ -144,20 +143,25 @@ class GraphFragment : Fragment() {
          */
         val entries = ArrayList<Entry>()
         val diff = ArrayList<Float>()
-        for (i in 0 until dataSize) {
+        diff.add(0f)
+        for (i in 0 until (dataSize-1)) {
             // Data is equal to diff array.
-            if (i == 0) continue;
-            diff.add(covid19Items.get(i).decideCnt!!.toFloat() - covid19Items.get(i - 1).decideCnt!!.toFloat())
+            diff.add(covid19Items.get(i + 1).decideCnt!!.toFloat() - covid19Items.get(i).decideCnt!!.toFloat())
             entries.add(Entry(i.toFloat(), diff[i]))
         }
+        /*
+        for (i in 0 until dataSize) {
+            entries.add(Entry(i.toFloat(), covid19Items.get(i).decideCnt!!.toFloat()))
+        }
+         */
 
         val lineDataSet = LineDataSet(entries, "y범례")
         lineDataSet.apply {
             lineWidth = 2f
             circleRadius = 6f
-            circleHoleColor = ContextCompat.getColor(context!!, R.color.purple_500)
-            color = ContextCompat.getColor(context!!, R.color.purple_700)
-            setCircleColor(ContextCompat.getColor(context!!, R.color.purple_200))
+            circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
+            color = ContextCompat.getColor(requireContext(), R.color.purple_700)
+            setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
             setDrawFilled(true)
         }
 
@@ -196,8 +200,8 @@ class GraphFragment : Fragment() {
         urlStringBuilder.append("ServiceKey=${GraphFragment.KEY}")
         urlStringBuilder.append("&pageNo=1")
         urlStringBuilder.append("&numOfRows=10")
-        urlStringBuilder.append("&startCreateDt=20200310")
-        urlStringBuilder.append("&endCreateDt=20200315")
+        urlStringBuilder.append("&startCreateDt=20201101")
+        urlStringBuilder.append("&endCreateDt=20201110")
 
         val urlString: String = urlStringBuilder.toString()
 
