@@ -70,14 +70,16 @@ class GraphFragment : Fragment() {
          data := LineData(dataSets)
          chart.data = data
          */
-        val entries = ArrayList<Entry>()
-        for (i in 0 until dataSize) {
-            entries.add(Entry(i.toFloat(), covid19Items.get(i).decideCnt!!.toFloat()))
-        }
-        entries.removeAt(0);
 
-        val lineDataSet = LineDataSet(entries, "y범례")
-        lineDataSet.apply {
+        // 누적 확진
+        val decideEntries = ArrayList<Entry>()
+        for (i in 0 until dataSize) {
+            decideEntries.add(Entry(i.toFloat(), covid19Items.get(i).decideCnt!!.toFloat()))
+        }
+        decideEntries.removeAt(0);
+
+        val decideLineDataSet = LineDataSet(decideEntries, "누적 확진자 수")
+        decideLineDataSet.apply {
             lineWidth = 2f
             circleRadius = 6f
             // circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
@@ -86,8 +88,28 @@ class GraphFragment : Fragment() {
             setDrawFilled(true)
         }
 
+        // 격리해제
+        val clearEntries = ArrayList<Entry>()
+        for (i in 0 until dataSize) {
+            clearEntries.add(Entry(i.toFloat(), covid19Items.get(i).clearCnt!!.toFloat()))
+        }
+        clearEntries.removeAt(0);
+
+        val clearLineDataSet = LineDataSet(clearEntries, "격리해제 수")
+        clearLineDataSet.apply {
+            lineWidth = 2f
+            circleRadius = 6f
+            circleHoleColor = ContextCompat.getColor(requireContext(), R.color.purple_500)
+            color = ContextCompat.getColor(requireContext(), R.color.purple_700)
+            setCircleColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
+            setDrawFilled(true)
+        }
+
+        // 종합
+
         val dataSets = ArrayList<ILineDataSet>()
-        dataSets.add(lineDataSet)
+        dataSets.add(decideLineDataSet)
+        dataSets.add(clearLineDataSet)
 
         val data = LineData(dataSets)
         cumulativeCasesLineChart.data = data
@@ -142,7 +164,7 @@ class GraphFragment : Fragment() {
         }
         entries.removeAt(0);
 
-        val lineDataSet = LineDataSet(entries, "y범례")
+        val lineDataSet = LineDataSet(entries, "확진자 수")
         lineDataSet.apply {
             lineWidth = 2f
             circleRadius = 6f
